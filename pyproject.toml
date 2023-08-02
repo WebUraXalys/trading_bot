@@ -1,18 +1,13 @@
 [tool.poetry]
-name = "back"
+name = "trading-bot"
 version = "0.1.0"
 description = ""
-authors = ["Igor4er <sherednihenko.ihor@gmail.com>"]
+authors = ["writer-mng <volodymyrpetriv2207@gmail.com>"]
 readme = "README.md"
+packages = [{include = "trading_bot"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = "^0.100.1"
-peewee = "^3.16.2"
-python-dotenv = "^1.0.0"
-pydantic-settings = "^2.0.2"
-uvicorn = "^0.23.2"
-pyjwt = "^2.8.0"
 
 
 [build-system]

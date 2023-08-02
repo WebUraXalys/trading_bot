@@ -1,4 +1,4 @@
-from back.app import app
+from back.back.app import app
 import uvicorn
 
 
