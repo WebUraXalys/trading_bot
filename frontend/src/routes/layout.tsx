@@ -1,5 +1,5 @@
 import { component$, Slot, useStyles$ } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { routeLoader$, routeAction$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 
 
@@ -19,7 +19,19 @@ export const useServerTimeLoader = routeLoader$(() => {
     date: new Date().toISOString(),
   };
 });
-
+export const getRegistration = routeAction$(async (data, requestEvent) =>{
+  return fetch(`http://127.0.0.1:8000/registration`, {
+    method: "post",
+    body: `?email=${data.email}&password=${data.password}`
+  }).then((resp) => {
+    if (resp.status == 200){
+      return resp.json().then((d) => {return {"ok": resp.ok, "data": d}})
+    } else{
+      return {"ok": false, "data": null}
+    }
+    
+  })
+});
 export default component$(() => {
   return (
     <>
