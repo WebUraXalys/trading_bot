@@ -43,6 +43,7 @@ export const useSignin = routeAction$(async (data) => {
       ok = true;
       data = await resp.json();
     }
+    console.log({"ok": ok, "data": data});
 
     return {"ok": ok, "data": data}
   });
