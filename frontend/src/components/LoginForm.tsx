@@ -17,13 +17,13 @@ export default component$(() => {
                   <label class="label">
                      <span class="label-text">Email</span>
                   </label>
-                  <input type="text" placeholder="email" class="input input-bordered" />
+                  <input type="text" placeholder="Email" class="input input-bordered" />
                </div>
                <div class="form-control">
                   <label class="label">
                      <span class="label-text">Password</span>
                   </label>
-                  <input type="text" placeholder="password" class="input input-bordered" />
+                  <input type="text" placeholder="Password" class="input input-bordered" />
                   <label class="label">
                      <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
                   </label>
