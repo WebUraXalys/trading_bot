@@ -22,9 +22,9 @@ export default component$(() => {
                <div class="card-body">
                <div class="form-control">
                   <label class="label">
-                     <span class="label-text">Email</span>
+                     <span class="label-text">Login</span>
                   </label>
-                  <input type="text" placeholder="Email" name="email" class="input input-bordered" bind:value={email}/>
+                  <input type="text" placeholder="Login" name="login" class="input input-bordered" bind:value={email}/>
                </div>
                <div class="form-control">
                   <label class="label">
@@ -38,7 +38,7 @@ export default component$(() => {
                </div>
                <div class="form-control mt-6">
                   <button class="btn btn-primary" type="submit" onClick$={()=>{
-                        if (email.value.length > 8 && password.value.length > 8 && email.value.includes("@") && password2.value.length > 8 && password.value == password2.value) {
+                        if (email.value.length > 8 && password.value.length > 8 && password2.value.length > 8 && password.value == password2.value) {
                            console.log("+");
                         }
                         else {

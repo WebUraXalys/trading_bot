@@ -41,6 +41,8 @@ def dec(token: str):
 
 @router.post('/signup')
 def signup(login: str, password: str):
+    print(login)
+    print(password)
     hashed_password = argon2.hash_password(bytes(password, 'utf-8'))
     user, created = models.User.get_or_create(login=login, hashed_password=hashed_password)
     return created

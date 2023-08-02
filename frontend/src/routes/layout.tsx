@@ -22,28 +22,29 @@ export const useServerTimeLoader = routeLoader$(() => {
 
 
 export const getRegistration = routeAction$(async (data, requestEvent) =>{
-  return fetch(`http://127.0.0.1:8000/registration`, {
-    method: "post",
-    body: `?email=${data.email}&password=${data.password}`
+  // console.log(data.password);
+  // console.log(data.login);
+  return fetch(`http://127.0.0.1:8000/auth/signup?login=${data.login}&password=${data.password}`, {
+    method: "POST"
   }).then((resp) => {
+    console.log(resp.status);
     if (resp.status == 200){
       return resp.json().then((d) => {return {"ok": resp.ok, "data": d}})
     } else{
       return {"ok": false, "data": null}
     }
-    
-  })
+  });
 });
 
 export const useSignin = routeAction$(async (data) => {
-  return fetch("http://127.0.0.1:8000/auth/signin", {method: "POST", body: `login=${data.login}&password=${data.password}`}).then(async (resp) => {
+  return fetch(`http://127.0.0.1:8000/auth/signin?login=${data.login}&password=${data.password}`, {method: "POST"}).then(async (resp) => {
     let ok = false;
     let data = null;
     if (resp.status == 200) {
       ok = true;
       data = await resp.json();
     }
-    console.log({"ok": ok, "data": data});
+    // console.log({"ok": ok, "data": data});
 
     return {"ok": ok, "data": data}
   });
