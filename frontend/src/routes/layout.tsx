@@ -19,6 +19,8 @@ export const useServerTimeLoader = routeLoader$(() => {
     date: new Date().toISOString(),
   };
 });
+
+
 export const getRegistration = routeAction$(async (data, requestEvent) =>{
   return fetch(`http://127.0.0.1:8000/registration`, {
     method: "post",
@@ -32,6 +34,21 @@ export const getRegistration = routeAction$(async (data, requestEvent) =>{
     
   })
 });
+
+export const useSignin = routeAction$(async (data) => {
+  return fetch("http://127.0.0.1:8000/auth/signin", {method: "POST", body: `login=${data.login}&password=${data.password}`}).then(async (resp) => {
+    let ok = false;
+    let data = null;
+    if (resp.status == 200) {
+      ok = true;
+      data = await resp.json();
+    }
+
+    return {"ok": ok, "data": data}
+  });
+});
+
+
 export default component$(() => {
   return (
     <>

@@ -1,13 +1,14 @@
 import { component$} from "@builder.io/qwik";
-import { Link} from "@builder.io/qwik-city";
-// import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
+import { Link } from "@builder.io/qwik-city";
+import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
+import { useSignin } from "~/routes/layout";
 
 export default component$(() => {
-
+   const action = useSignin();
     return (
         <>
          <div class="min-h-screen bg-base-200 pt-[10%]">
-         <div class="">
+         <Form action={action} class="">
             <div class="text-center ">
                <h1 class="text-5xl font-bold">Login</h1>
             </div>
@@ -17,19 +18,19 @@ export default component$(() => {
                   <label class="label">
                      <span class="label-text">Email</span>
                   </label>
-                  <input type="text" placeholder="Email" class="input input-bordered" />
+                  <input type="text" placeholder="Логін" class="input input-bordered" name="login" />
                </div>
                <div class="form-control">
                   <label class="label">
                      <span class="label-text">Password</span>
                   </label>
-                  <input type="text" placeholder="Password" class="input input-bordered" />
+                  <input type="password" placeholder="Пароль" class="input input-bordered" name="password" />
                   <label class="label">
                      <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
                   </label>
                </div>
                <div class="form-control mt-6">
-                  <button class="btn btn-primary">Login</button>
+                  <button class="btn btn-primary" type="submit">Login</button>
                </div>
                </div>
                
@@ -40,8 +41,8 @@ export default component$(() => {
             </div>
             
             
-         </div>
+         </Form>
          </div>
         </>
     )
-})
+});
