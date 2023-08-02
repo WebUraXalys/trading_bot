@@ -2,8 +2,8 @@ import time
 import jwt
 from fastapi import Request, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from back.back.dto.user import User
-from back.back.settings import settings
+from back.dto.user import User
+from back.settings import settings
 
 
 class JWTBearer(HTTPBearer):

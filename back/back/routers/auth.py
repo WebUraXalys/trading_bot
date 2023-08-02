@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends
 from typing import Annotated
 import argon2
 from fastapi import Request, HTTPException
-from back.back.dto.user import User
-from back.back.db import models
-from back.back.auth.authentication import JWTBearer
-from back.back.settings import settings
+from back.dto.user import User
+from back.db import models
+from back.auth.authentication import JWTBearer
+from back.settings import settings
 
 router = APIRouter(prefix="/auth", tags=['authentification'])
 

@@ -1,9 +1,4 @@
-import sys
-sys.path.append("..")
-sys.path.append(".")
-
-
-from back.back.app import app
+from back.app import app
 import uvicorn
 
 if __name__ == "__main__":
