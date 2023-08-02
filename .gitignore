@@ -13,6 +13,7 @@ node_modules
 .mf
 .rollup.cache
 tsconfig.tsbuildinfo
+/__pycache__/*
 
 # Logs
 logs
@@ -49,3 +50,9 @@ venv/*
 __pycahce__/
 __pycahce__/*
 /__pycahce__/*
+*.pyc
+
+.env
+*.env
+
+poetry.lock
