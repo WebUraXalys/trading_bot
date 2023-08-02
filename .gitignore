@@ -49,3 +49,6 @@ venv/*
 __pycahce__/
 __pycahce__/*
 /__pycahce__/*
+
+.env
+*.env
