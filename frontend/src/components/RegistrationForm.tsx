@@ -1,6 +1,6 @@
 import { component$, useSignal, useContext } from "@builder.io/qwik";
 import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
-import { getRegistration } from "~/routes/layout";
+import { useSignUp } from "~/routes/layout";
 
 
 export default component$(() => {
@@ -8,11 +8,12 @@ export default component$(() => {
    const password = useSignal("");
    const password2 = useSignal("");
    const incorrect = useSignal(false);
-   const action = getRegistration();
+   const action = useSignUp();
+   const nav = useNavigate();
 
     return (
         <>
-         <div class=" min-h-screen bg-base-200 pt-[10%]">
+         <div class="min-h-screen bg-base-200 pt-[10%]">
          <div class="">
             <div class="text-center">
                <h1 class="text-5xl font-bold">Registration</h1>
@@ -48,7 +49,6 @@ export default component$(() => {
                   {incorrect.value ? <div class="alert alert-error m-auto max-w-sm mt-1">Некоректні дані</div> : <div class="alert alert-error m-auto max-w-sm mt-1 hidden">.</div>} 
                </div>
                </div>
-               {/* {action.value?.ok} */}
             </Form>
          </div>
          </div>

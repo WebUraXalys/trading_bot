@@ -1,10 +1,23 @@
-import { component$} from "@builder.io/qwik";
+import { component$, useContext, useTask$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
-import { useSignin } from "~/routes/layout";
+import { useSignIn } from "~/routes/layout";
+import { authContext } from "~/routes/layout";
+
+
 
 export default component$(() => {
-   const action = useSignin();
+   const action = useSignIn();
+   const auth = useContext(authContext);
+
+   useTask$(({ track }) => {
+      track(() => action.value?.ok);
+      const data = action.value?.data;
+      if (action.value?.ok) {
+         auth.value = data;
+      }
+   });
+
     return (
         <>
          <div class="min-h-screen bg-base-200 pt-[10%]">
@@ -26,7 +39,7 @@ export default component$(() => {
                   </label>
                   <input type="password" placeholder="Пароль" class="input input-bordered" name="password" />
                   <label class="label">
-                     <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+                     <Link href="/restore" class="label-text-alt link link-hover">Forgot password?</Link>
                   </label>
                </div>
                <div class="form-control mt-6">
@@ -39,8 +52,6 @@ export default component$(() => {
                {/* <Link href="/registration"><button class="btn btn-outline btn-primary w-[100%]">Registration</button></Link> */}
                <Link href="/registration" class="link link-primary">Registration</Link>
             </div>
-            
-            
          </Form>
          </div>
         </>

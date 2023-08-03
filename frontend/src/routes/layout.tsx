@@ -1,6 +1,8 @@
-import { component$, Slot, useStyles$ } from "@builder.io/qwik";
+import type { Signal } from "@builder.io/qwik";
+import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useVisibleTask$ } from "@builder.io/qwik";
 import { routeLoader$, routeAction$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
+import Cookies from "js-cookie";
 
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
@@ -21,7 +23,18 @@ export const useServerTimeLoader = routeLoader$(() => {
 });
 
 
-export const getRegistration = routeAction$(async (data, requestEvent) =>{
+export const useCheckAuth = routeLoader$(async (requestEvent) => {
+  const cook = requestEvent.cookie.get("auth");
+  if (cook == null) {
+    return "";
+  }
+  else {
+    return cook.value;
+  }
+});
+
+
+export const useSignUp = routeAction$(async (data, requestEvent) =>{
   // console.log(data.password);
   // console.log(data.login);
   return fetch(`http://127.0.0.1:8000/auth/signup?login=${data.login}&password=${data.password}`, {
@@ -30,13 +43,13 @@ export const getRegistration = routeAction$(async (data, requestEvent) =>{
     console.log(resp.status);
     if (resp.status == 200){
       return resp.json().then((d) => {return {"ok": resp.ok, "data": d}})
-    } else{
+    } else {
       return {"ok": false, "data": null}
     }
   });
 });
 
-export const useSignin = routeAction$(async (data) => {
+export const useSignIn = routeAction$(async (data) => {
   return fetch(`http://127.0.0.1:8000/auth/signin?login=${data.login}&password=${data.password}`, {method: "POST"}).then(async (resp) => {
     let ok = false;
     let data = null;
@@ -50,8 +63,15 @@ export const useSignin = routeAction$(async (data) => {
   });
 });
 
+export const authContext = createContextId<Signal<string>>("ac");
 
 export default component$(() => {
+  const auth = useSignal(useCheckAuth().value);
+  useContextProvider(authContext, auth);
+  useComputed$(() => {
+    Cookies.set("auth", auth.value);
+  });
+
   return (
     <>
       <main>
