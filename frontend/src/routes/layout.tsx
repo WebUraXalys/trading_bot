@@ -1,6 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
 import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useTask$ } from "@builder.io/qwik";
-import { routeLoader$, routeAction$, zod$, z } from "@builder.io/qwik-city";
+import { routeLoader$, routeAction$, zod$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Cookies from "js-cookie";
 import { isBrowser } from "@builder.io/qwik/build";
@@ -45,7 +45,7 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
 });
 
 
-export const useSignUp = routeAction$(async (data, requestEvent) =>{
+export const useSignUp = routeAction$(async (data) =>{
   // console.log(data.password);
   // console.log(data.login);
   return fetch(`http://127.0.0.1:8000/auth/signup?login=${data.login}&password=${data.password}`, {

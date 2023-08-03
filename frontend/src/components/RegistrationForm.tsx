@@ -1,5 +1,5 @@
-import { component$, useSignal, useContext, useTask$ } from "@builder.io/qwik";
-import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
+import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { Form, useNavigate } from "@builder.io/qwik-city";
 import { useSignUp } from "~/routes/layout";
 import { isBrowser } from "@builder.io/qwik/build"
 
@@ -8,7 +8,6 @@ export default component$(() => {
    const email = useSignal("");
    const password = useSignal("");
    const password2 = useSignal("");
-   const incorrect = useSignal(false);
    const action = useSignUp();
    const nav = useNavigate();
    
