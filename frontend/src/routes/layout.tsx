@@ -68,19 +68,24 @@ zod$((z) => {
 })
 );
 
-export const useSignIn = routeAction$(async (data) => {
+export const useSignIn = routeAction$(async (data, { fail }) => {
   return fetch(`http://127.0.0.1:8000/auth/signin?login=${data.login}&password=${data.password}`, {method: "POST"}).then(async (resp) => {
-    let ok = false;
-    let data = null;
     if (resp.status == 200) {
-      ok = true;
-      data = await resp.json();
+      const data = await resp.json();
+      return {"ok": true, "data": data}
     }
-    // console.log({"ok": ok, "data": data});
-
-    return {"ok": ok, "data": data}
+    else {
+      return fail(401, {message: "Неправильний логін або пароль"});
+    }
   });
-});
+},
+zod$((z) => {
+  return z.object({
+    login: z.string().min(3, "менше 3 символів"),
+    password: z.string().min(12, "менше 12 символів"),
+  })
+})
+);
 
 export const authContext = createContextId<Signal<string>>("ac");
 export const themeContext = createContextId<Signal<string>>("theme");
