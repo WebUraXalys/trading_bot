@@ -16,7 +16,7 @@ export default component$(() => {
    useTask$(({ track }) => {
       track(() => {action.value?.ok});
       if (isBrowser && action.value?.ok) {
-         nav("/login/?q");
+         nav(`/login/?q=${valueLogin.value}`);
       }
    });
 

@@ -13,7 +13,8 @@ export default component$(() => {
    const auth = useContext(authContext);
    const nav = useNavigate();
    const loc = useLocation();
-   const valueLogin = useSignal("");
+   const q = loc.url.searchParams.get("q");
+   const valueLogin = useSignal(q != null ? q : "");
    const valuePassword = useSignal("");
 
    useTask$(({ track }) => {
