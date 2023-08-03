@@ -1,8 +1,9 @@
 import type { Signal } from "@builder.io/qwik";
-import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useVisibleTask$ } from "@builder.io/qwik";
-import { routeLoader$, routeAction$ } from "@builder.io/qwik-city";
+import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useTask$ } from "@builder.io/qwik";
+import { routeLoader$, routeAction$, zod$, z } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Cookies from "js-cookie";
+import { isBrowser } from "@builder.io/qwik/build";
 
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
@@ -33,6 +34,16 @@ export const useCheckAuth = routeLoader$(async (requestEvent) => {
   }
 });
 
+export const useGetTheme = routeLoader$(async (requestEvent) => {
+  const cook = requestEvent.cookie.get("data-theme");
+  if (cook == null) {
+    return "dark";
+  }
+  else {
+    return cook.value;
+  }
+});
+
 
 export const useSignUp = routeAction$(async (data, requestEvent) =>{
   // console.log(data.password);
@@ -47,7 +58,15 @@ export const useSignUp = routeAction$(async (data, requestEvent) =>{
       return {"ok": false, "data": null}
     }
   });
-});
+},
+zod$((z) => {
+  return z.object({
+    login: z.string().min(3, "менше 3 символів"),
+    password: z.string().min(12, "менше 12 символів"),
+    password2: z.string().min(12)
+  }).refine((data) => data.password == data.password2, "Паролі не співпадають");
+})
+);
 
 export const useSignIn = routeAction$(async (data) => {
   return fetch(`http://127.0.0.1:8000/auth/signin?login=${data.login}&password=${data.password}`, {method: "POST"}).then(async (resp) => {
@@ -64,6 +83,7 @@ export const useSignIn = routeAction$(async (data) => {
 });
 
 export const authContext = createContextId<Signal<string>>("ac");
+export const themeContext = createContextId<Signal<string>>("theme");
 
 export default component$(() => {
   const av = useCheckAuth().value;
@@ -73,9 +93,19 @@ export default component$(() => {
     Cookies.set("auth", auth.value, {sameSite: "strict", secure: true, "Max-Age": "3600"});
   });
 
+  const lsTheme = useGetTheme().value;
+  const theme = useSignal(lsTheme);
+  useTask$(({ track }) => {
+    track(() => {theme.value})
+    if (isBrowser) {
+      Cookies.set("data-theme", theme.value, {"Max-Age": "7776000"})
+    }
+  });
+  useContextProvider(themeContext, theme);
+
   return (
     <>
-      <main>
+      <main data-theme={theme.value}>
         <Slot />
       </main>
     </>
