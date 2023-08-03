@@ -3,18 +3,23 @@ import { Link } from "@builder.io/qwik-city";
 import { Form, useNavigate, useLocation } from "@builder.io/qwik-city";
 import { useSignIn } from "~/routes/layout";
 import { authContext } from "~/routes/layout";
+import { isBrowser } from "@builder.io/qwik/build"
 
 
 
 export default component$(() => {
    const action = useSignIn();
    const auth = useContext(authContext);
+   const nav = useNavigate();
 
    useTask$(({ track }) => {
       track(() => action.value?.ok);
       const data = action.value?.data;
       if (action.value?.ok) {
          auth.value = data.key;
+      }
+      if (isBrowser && action.value?.ok) {
+         nav("/");
       }
    });
 
