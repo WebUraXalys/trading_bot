@@ -40,6 +40,7 @@
     "vite-tsconfig-paths": "4.2.0"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.3",
     "js-cookie": "^3.0.5"
   }
 }

@@ -66,10 +66,11 @@ export const useSignIn = routeAction$(async (data) => {
 export const authContext = createContextId<Signal<string>>("ac");
 
 export default component$(() => {
-  const auth = useSignal(useCheckAuth().value);
+  const av = useCheckAuth().value;
+  const auth = useSignal(av);
   useContextProvider(authContext, auth);
   useComputed$(() => {
-    Cookies.set("auth", auth.value);
+    Cookies.set("auth", auth.value, {sameSite: "strict", secure: true, "Max-Age": "3600"});
   });
 
   return (

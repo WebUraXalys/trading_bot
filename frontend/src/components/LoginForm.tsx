@@ -14,7 +14,7 @@ export default component$(() => {
       track(() => action.value?.ok);
       const data = action.value?.data;
       if (action.value?.ok) {
-         auth.value = data;
+         auth.value = data.key;
       }
    });
 
