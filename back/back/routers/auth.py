@@ -2,15 +2,8 @@ import jwt
 import datetime
 from fastapi import APIRouter
 import argon2
-<<<<<<< HEAD
-from fastapi import Request, HTTPException
-from back.dto.user import User
-from back.db import models
-from back.auth.authentication import JWTBearer
-=======
 from fastapi import HTTPException
 from back.db import models
->>>>>>> back
 from back.settings import settings
 
 router = APIRouter(prefix="/auth", tags=['authentication'])
