@@ -42,7 +42,7 @@ export default component$(() => {
 
     return (
         <>
-         <div class="bg-base-200 pt-[10%]">
+         <div class=" pt-[10%]">
             <Form action={action}>
                <div class="text-center ">
                   <h1 class="text-5xl font-bold">Вхід</h1>

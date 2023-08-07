@@ -31,13 +31,13 @@ export default component$(() => {
 
     return (
       <>
-         <div class="min-h-screen bg-base-200 pt-[10%]">
+         <div class="pt-[10%]">
             <Form action={action}>
                <div class="text-center">
                   <h1 class="text-5xl font-bold">Реєстрація</h1>
                   {/* <p class="py-6">APP</p> */}
                </div>
-               <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 m-auto mt-5">
+               <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-200 m-auto mt-5">
                   <div class="card-body">
                      <div class="form-control">
                         <label class="label">
