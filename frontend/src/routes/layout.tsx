@@ -1,6 +1,6 @@
 import type { Signal } from "@builder.io/qwik";
-import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useTask$ } from "@builder.io/qwik";
-import { routeLoader$, routeAction$, zod$ } from "@builder.io/qwik-city";
+import { component$, Slot, useSignal, useContextProvider, createContextId, useComputed$, useTask$,  } from "@builder.io/qwik";
+import { routeLoader$, routeAction$, zod$, useLocation } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Cookies from "js-cookie";
 import { isBrowser } from "@builder.io/qwik/build";
@@ -132,15 +132,19 @@ export default component$(() => {
     }
   });
   useContextProvider(themeContext, theme);
-
+  const loc = useLocation();
   return (
     <>
     <main data-theme={theme.value}>
-        {/* <Header/> */}
-
-        
-        <Slot />
-        {/* <Menu/> */}
+        <Header/>
+         <div class={loc.url.pathname.includes("registration") || loc.url.pathname.includes("login") ? "drawer" : "drawer drawer-open"}>
+         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+          <div class="drawer-content "> {/*flex flex-col items-center justify-center */}
+          <Slot />
+         </div>
+          <Menu/> 
+        </div>
+       
     </main>
      
       
