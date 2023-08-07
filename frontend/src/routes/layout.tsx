@@ -4,6 +4,8 @@ import { routeLoader$, routeAction$, zod$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import Cookies from "js-cookie";
 import { isBrowser } from "@builder.io/qwik/build";
+import Header from "~/components/Header";
+import Menu from "~/components/Menu";
 
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
@@ -133,9 +135,15 @@ export default component$(() => {
 
   return (
     <>
-      <main data-theme={theme.value}>
+    <main data-theme={theme.value}>
+        {/* <Header/> */}
+
+        
         <Slot />
-      </main>
+        {/* <Menu/> */}
+    </main>
+     
+      
     </>
   );
 });

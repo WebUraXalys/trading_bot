@@ -15,7 +15,7 @@ export default component$(() => {
             </button> */}
          </div>
          <div class="flex-1">
-            <a class="btn btn-ghost normal-case text-xl">Treding Bot</a>
+            <a class="btn btn-ghost normal-case text-xl">Trading Bot</a>
          </div>
          {/* <div class="flex-none">
             <button class="btn btn-square btn-ghost">
