@@ -48,7 +48,6 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
 
 
 export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
-  console.log(requestEvent.cookie.has("auth"))
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
     return await fetch(`http://127.0.0.1:8000/user/settings`, {
@@ -69,6 +68,28 @@ export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
     });
   }
   return {"ok": false, "api_key": "what", "secret_key": ""};
+});
+
+
+export const useGetPairs = routeLoader$(async (requestEvent) => {
+  if (requestEvent.cookie.has("auth")) {
+    const userAuth = requestEvent.cookie.get("auth");
+    const res = await fetch(`http://127.0.0.1:8000/exchange/info`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${userAuth?.value}`,
+      "Content-Type": "application/json"
+    }
+    }).then(async (r) => {
+      const res = await r.json();
+      if (r.status == 200) {
+        return res;
+      }
+    });
+    return {ok: true, data: res}
+  }
+  return {ok: false, data: {}}
 });
 
 
@@ -117,7 +138,6 @@ zod$((z) => {
 export const useSaveKeys = routeAction$(async (data, requestEvent ) => {
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
-    console.log(userAuth?.value);
     const res = await fetch(`http://127.0.0.1:8000/user/settings`, {
     method: "POST",
     credentials: "include",
@@ -131,7 +151,6 @@ export const useSaveKeys = routeAction$(async (data, requestEvent ) => {
       "Content-Type": "application/json"
     }
     }).then(async (r) => { return r.json().then((j) => {return j})});
-    console.log(res);
     if (res.status == 200) {
       return {ok: true};
     }

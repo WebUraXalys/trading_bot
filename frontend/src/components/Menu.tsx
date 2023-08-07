@@ -23,11 +23,11 @@ export default component$(() => {
 
          <div class="drawer-side">
             <label for="my-drawer-2" class="drawer-overlay"></label> 
-            <ul class="menu p-4 w-60 h-screen bg-base-200 text-base-content">
+            <ul class="menu p-4 w-60 h-screen bg-base-200 text-base-content gap-1">
             <li><Link href="/" class="btn btn-ghost normal-case text-xl mb-8">Trading Bot</Link></li>
                <li><Link href="/">Головна сторінка</Link></li>
                <li><Link href="/">Trading Bot</Link></li>
-               <li><Link href="/">Trading Terminal</Link></li>
+               <li><Link href="/main/trTerminal">Trading Terminal</Link></li>
                <li><Link href="/main/settings/API/">API settings</Link></li>
             </ul>
          </div>

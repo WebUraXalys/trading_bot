@@ -15,7 +15,7 @@ export default extendConfig(baseConfig, () => {
       denoServerAdapter({
         ssg: {
           include: ["/*"],
-          origin: "https://yoursite.dev",
+          origin: "https://2b2d-192-162-33-129.ngrok-free.app",
         },
       }),
     ],
