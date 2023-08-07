@@ -45,13 +45,25 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
 });
 
 
-export const useGetAPIKeys = routeLoader$(async (requestEvent, fail) => {
+export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
-    const res = await fetch(``);
+    const res = await fetch(`http://127.0.0.1:8000/user/settings`, {
+    method: "get",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${userAuth}`
+    }
+    }).then(async (r) => {return await r.json()});
+    if (res.status == 200) {
+      return {"ok": true, "apikey": res.apikey, "secretkey": res.secretkey};
+    }
+    else {
+      return {"unauthorized": true};
+    }
   }
   else {
-    return {"unauthorized": true}
+    return {"unauthorized": true};
   }
 });
 
