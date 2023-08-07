@@ -110,6 +110,28 @@ zod$((z) => {
 })
 );
 
+export const useSaveKeys = routeAction$(async (data, requestEvent ) => {
+  if (requestEvent.cookie.has("auth")) {
+    const userAuth = requestEvent.cookie.get("auth");
+    const res = await fetch(`http://127.0.0.1:8000/user/settings`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Authorization": `Bearer ${userAuth}`
+    }
+    }).then(async (r) => {return await r.json()});
+    if (res.status == 200) {
+      return {"ok": true};
+    }
+    else {
+      return {ok: false, message: "Помилка на стороні сервера"}
+    }
+  }
+  else {
+    return {ok: false, message: "Неавторизовано"}
+  }
+});
+
 export const authContext = createContextId<Signal<string>>("ac");
 export const themeContext = createContextId<Signal<string>>("theme");
 

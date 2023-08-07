@@ -11,6 +11,7 @@ export default component$(() => {
     <>
      <Header/>
      <Menu/>
+     <APIKeysForm/>
     </>
   )});
 

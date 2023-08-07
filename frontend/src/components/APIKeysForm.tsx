@@ -1,6 +1,6 @@
 import { component$, useSignal, useTask$, useComputed$, useContext } from "@builder.io/qwik";
 import { Form, useNavigate, Link } from "@builder.io/qwik-city";
-import { useSignUp } from "~/routes/layout";
+import { useSaveKeys } from "~/routes/layout";
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { isBrowser } from "@builder.io/qwik/build"
 import { useGetAPIKeys } from "~/routes/layout";
@@ -9,7 +9,7 @@ import { authContext } from "~/routes/layout";
 
 export default component$(() => {
   const initialState = useGetAPIKeys();
-  const action = useSignUp();
+  const action = useSaveKeys();
   const valueAPIKey = useSignal(initialState.value.apikey);
   const valueAPISecret = useSignal(initialState.value.secretkey);
   const auth = useContext(authContext);
@@ -25,7 +25,7 @@ export default component$(() => {
     return (
       <>
       <div class="min-h-screen bg-base-200 pt-[10%]">
-        <Form>
+        <Form action={action}>
             <div class="text-center ">
                 <h1 class="text-5xl font-bold">API Ключі</h1>
             </div>
@@ -40,13 +40,13 @@ export default component$(() => {
                         <span class="label-text">API Ключ</span>
                         {/* <span class="label-text-alt">Top Right label</span> */}
                       </label>
-                      <input type="text" placeholder="API key" class="input input-bordered w-full max-w-xs" bind: value={valueAPIKey} />
+                      <input type="text" placeholder="API key" class="input input-bordered w-full max-w-xs" bind:value={valueAPIKey} />
                     </div><div class="form-control w-full max-w-xs">
                         <label class="label">
                           <span class="label-text">Секретний ключ</span>
                           {/* <span class="label-text-alt">Top Right label</span> */}
                         </label>
-                        <input type="text" placeholder="Secret key" class="input input-bordered w-full max-w-xs" bind: value={valueAPISecret} />
+                        <input type="text" placeholder="Secret key" class="input input-bordered w-full max-w-xs" bind:value={valueAPISecret} />
                       </div><div class="form-control mt-6">
                         <span class="tooltip w-full" data-tip={btnDisabled.value&&!action.value?.failed? "Немає що змінювати":null}>
                           <button class="btn btn-primary w-full" type="submit" disabled={btnDisabled.value}>Зберегти</button>
