@@ -167,11 +167,11 @@ export default component$(() => {
   const loc = useLocation();
   return (
     <>
-    <main data-theme={theme.value}>
+    <main data-theme={theme.value} class="h-screen">
         <Header/>
          <div class={loc.url.pathname.includes("registration") || loc.url.pathname.includes("login") ? "drawer" : "drawer drawer-open"}>
          <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-          <div class="drawer-content "> {/*flex flex-col items-center justify-center */}
+          <div class="drawer-content mt-24"> {/*flex flex-col items-center justify-center */}
           <Slot />
          </div>
           <Menu/> 
