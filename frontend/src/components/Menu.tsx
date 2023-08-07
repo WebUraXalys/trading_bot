@@ -1,8 +1,5 @@
-import { component$, useComputed$, useContext} from "@builder.io/qwik";
-import { authContext } from "~/routes/layout";
-
-
-
+import { component$ } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
     return (
@@ -26,10 +23,10 @@ export default component$(() => {
          <div class="drawer-side">
             <label for="my-drawer-2" class="drawer-overlay"></label> 
             <ul class="menu p-4 w-60 h-screen bg-base-200 text-base-content">
-               <li><a>Головна сторінка</a></li>
-               <li><a>Trading Bot</a></li>
-               <li><a>Trading Terminal</a></li>
-               <li><a>API settings</a></li>
+               <li><Link href="#">Головна сторінка</Link></li>
+               <li><Link href="#">Trading Bot</Link></li>
+               <li><Link href="#">Trading Terminal</Link></li>
+               <li><Link href="/smainFunctions/settingsAPI/">API settings</Link></li>
             </ul>
          </div>
         </>
