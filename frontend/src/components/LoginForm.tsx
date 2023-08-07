@@ -76,7 +76,7 @@ export default component$(() => {
                </div>
                <div class="mt-8 text-center max-w-sm m-auto">
                   {/* <Link href="/registration"><button class="btn btn-outline btn-primary w-[100%]">Registration</button></Link> */}
-                  {loc.prevUrl?.pathname.includes("registration") && loc.url.searchParams.has("q") ? <div class="alert alert-success">Реєстрація успішна. Тепер ви можете увійти</div> : <Link href="/registration" class="link link-primary text-xl">Реєстрація</Link>}
+                  {loc.prevUrl?.pathname.includes("registration") && loc.url.searchParams.has("q") ? <div class="alert alert-success">Реєстрація успішна. Ви зможете увійти коли адміністрація схвалить ваш запит</div> : <Link href="/registration" class="link link-primary text-xl">Реєстрація</Link>}
                </div>
             </Form>
          </div>

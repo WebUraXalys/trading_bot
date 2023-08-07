@@ -45,6 +45,17 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
 });
 
 
+export const useGetAPIKeys = routeLoader$(async (requestEvent, fail) => {
+  if (requestEvent.cookie.has("auth")) {
+    const userAuth = requestEvent.cookie.get("auth");
+    const res = await fetch(``);
+  }
+  else {
+    return {"unauthorized": true}
+  }
+});
+
+
 export const useSignUp = routeAction$(async (data) =>{
   // console.log(data.password);
   // console.log(data.login);
