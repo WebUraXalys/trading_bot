@@ -48,25 +48,27 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
 
 
 export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
+  console.log(requestEvent.cookie.has("auth"))
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
-    const res = await fetch(`http://127.0.0.1:8000/user/settings`, {
-    method: "get",
+    return await fetch(`http://127.0.0.1:8000/user/settings`, {
+    method: "GET",
     credentials: "include",
     headers: {
-      "Authorization": `Bearer ${userAuth}`
+      "Authorization": `Bearer ${userAuth?.value}`,
+      "Content-Type": "application/json"
     }
-    }).then(async (r) => {return await r.json()});
-    if (res.status == 200) {
-      return {"ok": true, "apikey": res.apikey, "secretkey": res.secretkey};
-    }
-    else {
-      return {"unauthorized": true};
-    }
+    }).then(async (r) => {
+      const res = await r.json();
+      if (r.status == 200) {
+        return {"ok": true, api_key: res.api_key, secret_key: res.secret_key};
+      }
+      else {
+        return {"ok": false, "api_key": "una", "secret_key": ""};
+      }
+    });
   }
-  else {
-    return {"unauthorized": true};
-  }
+  return {"ok": false, "api_key": "what", "secret_key": ""};
 });
 
 
@@ -111,6 +113,36 @@ zod$((z) => {
   })
 })
 );
+
+export const useSaveKeys = routeAction$(async (data, requestEvent ) => {
+  if (requestEvent.cookie.has("auth")) {
+    const userAuth = requestEvent.cookie.get("auth");
+    console.log(userAuth?.value);
+    const res = await fetch(`http://127.0.0.1:8000/user/settings`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({
+      secret_key: data.secret_key,
+      api_key: data.api_key,
+    }),
+    headers: {
+      "accept": "application/json",
+      "Authorization": `Bearer ${userAuth?.value}`,
+      "Content-Type": "application/json"
+    }
+    }).then(async (r) => { return r.json().then((j) => {return j})});
+    console.log(res);
+    if (res.status == 200) {
+      return {ok: true};
+    }
+    else {
+      return {failed: false, message: "Помилка на стороні сервера"}
+    }
+  }
+  else {
+    return {failed: false, message: "Неавторизовано"}
+  }
+});
 
 export const authContext = createContextId<Signal<string>>("ac");
 export const themeContext = createContextId<Signal<string>>("theme");

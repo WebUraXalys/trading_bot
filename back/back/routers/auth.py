@@ -1,15 +1,12 @@
 import jwt
 import datetime
-from fastapi import APIRouter, Depends
-from typing import Annotated
+from fastapi import APIRouter
 import argon2
-from fastapi import Request, HTTPException
-from back.dto.user import User
+from fastapi import HTTPException
 from back.db import models
-from back.auth.authentication import JWTBearer
 from back.settings import settings
 
-router = APIRouter(prefix="/auth", tags=['authentification'])
+router = APIRouter(prefix="/auth", tags=['authentication'])
 
 
 @router.post('/signin')
@@ -25,10 +22,6 @@ def signin(login: str, password: str):
         return {"key": jwt.encode(token, secret, algorithm="HS256")}
     else:
         raise HTTPException(403, detail="Wrong password")
-
-
-# async def signin(user: Annotated[User, Depends(JWTBearer())]):
-#     return user
 
 
 @router.get('/dec')
