@@ -30,12 +30,12 @@ export default component$(() => {
       <div class="min-h-screen bg-base-200 pt-[10%]">
         <Form action={action}>
             <div class="text-center ">
-                <h1 class="text-5xl font-bold">API Ключі</h1>
+                <h1 class="text-2xl font-bold">API Ключі</h1>
             </div>
-            <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 m-auto mt-5">
+            <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 m-auto mt-2">
               <div class="card-body">
               {auth.value.length < 8 ?
-                <div class=" text-xl">Спочатку ввійдіть в акаунт</div>
+                <div class=" text-md">Спочатку ввійдіть в акаунт</div>
                 :
                 <>
                   <div class="form-control w-full max-w-xs">

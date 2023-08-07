@@ -47,21 +47,21 @@ export default component$(() => {
                <div class="text-center ">
                   <h1 class="text-5xl font-bold">Вхід</h1>
                </div>
-               <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 m-auto mt-5">
+               <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-200 m-auto mt-5">
                   <div class="card-body">
                      <div class="form-control">
                         <label class="label">
                            <span class="label-text">Логін</span>
                            <span class="label-text text-error">{action.value?.failed ? <div>{action.value.fieldErrors?.login}</div> : <></>}</span>
                         </label>
-                        <input type="text" placeholder="Логін" class="input input-bordered" name="login" bind:value={valueLogin} />
+                        <input type="text" placeholder="Логін" class="input input-bordered bg-base-200" name="login" bind:value={valueLogin} />
                      </div>
                      <div class="form-control">
                         <label class="label">
                            <span class="label-text">Пароль</span>
                            <span class="label-text text-error">{action.value?.failed ? <div>{action.value.fieldErrors?.password}</div> : <></>}</span>
                         </label>
-                        <input type="password" placeholder="Пароль" class="input input-bordered" name="password" bind:value={valuePassword} />
+                        <input type="password" placeholder="Пароль" class="input input-bordered bg-base-200" name="password" bind:value={valuePassword} />
                         <label class="label">
                            <Link href="/restore" class="label-text-alt link link-hover">Забули пароль?</Link>
                         </label>

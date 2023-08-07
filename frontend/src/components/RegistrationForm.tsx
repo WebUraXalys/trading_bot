@@ -44,19 +44,19 @@ export default component$(() => {
                            <span class="label-text">Логін</span>
                            <span class="label-text text-error">{action.value?.failed ? <div>{action.value.fieldErrors?.login}</div> : <></>}</span>
                         </label>
-                        <input type="text" placeholder="Логін" name="login" class="input input-bordered" bind:value={valueLogin}/>
+                        <input type="text" placeholder="Логін" name="login" class="input input-bordered bg-base-200" bind:value={valueLogin}/>
                      </div>
                      <div class="form-control">
                         <label class="label">
                            <span class="label-text">Пароль</span>
                            <span class="label-text text-error">{action.value?.failed ? <div>{action.value.fieldErrors?.password}</div> : <></>}</span>
                         </label>
-                        <input type="password" placeholder="Пароль" name="password" class="input input-bordered" bind:value={valuePassword} />
+                        <input type="password" placeholder="Пароль" name="password" class="input input-bordered bg-base-200" bind:value={valuePassword} />
                         <label class="label">
                            <span class="label-text">Повторіть пароль</span>
                            <span class="label-text text-error">{!valuePassword.value.startsWith(valuePassword2.value) ? <div>Паролі не збігаються</div> : <></>}</span>
                         </label>
-                        <input type="password" placeholder="Пароль" name="password2" class="input input-bordered" bind:value={valuePassword2}/>
+                        <input type="password" placeholder="Пароль" name="password2" class="input input-bordered bg-base-200" bind:value={valuePassword2}/>
                      </div>
                      <div class="form-control mt-6">
                         <span class="tooltip w-full" data-tip={btnDisabled.value && !action.value?.failed ? "Почніть вводити дані" : null}>

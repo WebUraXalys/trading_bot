@@ -29,7 +29,7 @@ export default component$(() => {
                <li><Link href="/">Головна сторінка</Link></li>
                <li><Link href="/">Trading Bot</Link></li>
                <li><Link href="/">Trading Terminal</Link></li>
-               <li><Link href="/smainFunctions/settingsAPI/">API settings</Link></li>
+               <li><Link href="/main/settings/API/">API settings</Link></li>
             </ul>
          </div>
         </>
