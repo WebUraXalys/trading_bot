@@ -23,9 +23,9 @@ export default component$(() => {
          </div>
          </div> */}
 
-         <div class="drawer-side h-[85vh]">
+         <div class="drawer-side">
             <label for="my-drawer-2" class="drawer-overlay"></label> 
-            <ul class="menu p-4 w-60 h-[100%] bg-base-200 text-base-content">
+            <ul class="menu p-4 w-60 h-screen bg-base-200 text-base-content">
                <li><a>Головна сторінка</a></li>
                <li><a>Trading Bot</a></li>
                <li><a>Trading Terminal</a></li>

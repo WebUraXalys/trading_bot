@@ -1,11 +1,14 @@
-import { component$, useComputed$, useContext} from "@builder.io/qwik";
+import { component$, useContext} from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
 import { authContext } from "~/routes/layout";
 import ThemeSwitchBtn from "./ThemeSwitchBtn";
 import LogoutBtn from "./LogoutBtn";
 
 
-
 export default component$(() => {
+   const auth = useContext(authContext)
+
+
     return (
         <>
          <div class="navbar bg-base-300">
@@ -15,7 +18,7 @@ export default component$(() => {
             </button> */}
          </div>
          <div class="flex-1">
-            <a class="btn btn-ghost normal-case text-xl">Trading Bot</a>
+            <Link href="/" class="btn btn-ghost normal-case text-xl">Trading Bot</Link>
          </div>
          {/* <div class="flex-none">
             <button class="btn btn-square btn-ghost">
@@ -37,7 +40,11 @@ export default component$(() => {
                </details>
                </li>
                <span class="mt-3 m-4"><ThemeSwitchBtn/></span>
-               <span><LogoutBtn/></span>
+               {auth.value.length > 8 ?
+                  <LogoutBtn/>
+               :
+                  <Link href="/login"><button class="btn btn-primary">Ввійти</button></Link>
+               }
                
             </ul>
          </div>
