@@ -1,8 +1,6 @@
-import { component$, useSignal, useTask$, useComputed$, useContext } from "@builder.io/qwik";
-import { Form, useNavigate, Link } from "@builder.io/qwik-city";
+import { component$, useSignal, useComputed$, useContext } from "@builder.io/qwik";
+import { Form } from "@builder.io/qwik-city";
 import { useSaveKeys } from "~/routes/layout";
-import { routeLoader$ } from '@builder.io/qwik-city';
-import { isBrowser } from "@builder.io/qwik/build"
 import { useGetAPIKeys } from "~/routes/layout";
 import { authContext } from "~/routes/layout";
 

@@ -1,5 +1,4 @@
-import { component$, useComputed$, useContext} from "@builder.io/qwik";
-import { authContext } from "~/routes/layout";
+import { component$} from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
 
 

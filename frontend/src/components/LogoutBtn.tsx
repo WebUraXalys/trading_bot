@@ -1,6 +1,5 @@
-import { component$, useComputed$, useContext, useSignal, useTask$ } from "@builder.io/qwik";
+import { component$, useComputed$, useContext } from "@builder.io/qwik";
 import { authContext } from "~/routes/layout";
-import Cookies from "js-cookie";
 
 
 

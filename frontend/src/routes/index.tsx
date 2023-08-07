@@ -1,9 +1,5 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import Header from "~/components/Header";
-import Menu from "~/components/Menu";
-import LogoutBtn from "~/components/LogoutBtn";
-import APIKeysForm from "~/components/APIKeysForm";
 import MainPage from "~/components/MainPage";
 
 
