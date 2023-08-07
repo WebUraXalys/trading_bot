@@ -27,7 +27,7 @@ export default component$(() => {
 
     return (
       <>
-      <div class="min-h-screen bg-base-200 pt-[10%]">
+      <div class="pt-[10%]">
         <Form action={action}>
             <div class="text-center ">
                 <h1 class="text-2xl font-bold">API Ключі</h1>
