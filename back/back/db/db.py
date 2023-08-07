@@ -1,5 +1,4 @@
 from contextvars import ContextVar
-
 import peewee
 
 DATABASE_NAME = "db.sqlite3"
