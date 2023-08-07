@@ -1,13 +1,14 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import ThemeSwitchBtn from "~/components/ThemeSwitchBtn";
+import Header from "~/components/Header";
+import LogoutBtn from "~/components/LogoutBtn";
 
 
 export default component$(() => {
   return (
     <>
-     <div class="clas"> Hellow</div>
-     <ThemeSwitchBtn />
+     <Header/>
     </>
   );
 });

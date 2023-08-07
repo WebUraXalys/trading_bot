@@ -9,14 +9,22 @@ export default component$(() => {
     return (
         <>
         {/* data-theme={theme.value == "dark" ? "light" : "dark"} */}
-            <button class="btn btn-secondary btn-outline" onClick$={() => {
+            {/* <button class="btn btn-secondary btn-outline" onClick$={() => {
                 if (theme.value == "dark") {
                     theme.value = "light";
                 }
                 else {
                     theme.value = "dark";
                 }
-            }}>Змінити тему</button>
+            }}>Змінити тему</button> */}
+            <input type="checkbox" class="toggle" checked onClick$={() => {
+                if (theme.value == "dark") {
+                    theme.value = "light";
+                }
+                else {
+                    theme.value = "dark";
+                }
+            }} />
         </>
     )
 });
