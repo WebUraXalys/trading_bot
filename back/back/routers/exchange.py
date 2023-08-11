@@ -21,6 +21,23 @@ async def get_settings(user: Annotated[User, Depends(JWTBearer())]):
 
 @router.get('/pair_info')
 async def get_settings(symbol: str, interval: str, user: Annotated[User, Depends(JWTBearer())]):
+    """ :return list of lists. Data is ordered in such way:
+    [
+      [
+        1591258320000,          // Open time
+        "9640.7",               // Open price
+        "9642.4",               // High price
+        "9640.6",               // Low price
+        "9642.0",               // Close (or latest price)
+        "206",                  // Volume
+        1591258379999,          // Close time
+        "2.13660389",           // Base asset volume
+        48,                     // Number of trades
+        "119",                  // Taker buy volume
+        "1.23424865",           // Taker buy base asset volume
+        "0"                     // Ignore.
+      ]
+    ]"""
     cm_futures_client = await api_authorise(login=user.login)
     return cm_futures_client.klines(symbol, interval, limit=3)
 
