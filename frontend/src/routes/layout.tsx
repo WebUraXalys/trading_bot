@@ -63,11 +63,11 @@ export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
         return {"ok": true, api_key: res.api_key, secret_key: res.secret_key};
       }
       else {
-        return {"ok": false, "api_key": "una", "secret_key": ""};
+        return {"ok": false, "api_key": "", "secret_key": ""};
       }
     });
   }
-  return {"ok": false, "api_key": "what", "secret_key": ""};
+  return {"ok": false, "api_key": "Натисніть F5", "secret_key": "Ні, справді натисніть"};
 });
 
 
