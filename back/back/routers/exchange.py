@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 from fastapi import HTTPException
-from binance.cm_futures import CMFutures
+from binance.client import Client
 from back.dto.user import User
 from back.db import models
 from back.auth.authentication import JWTBearer
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/exchange", tags=['exchange operations'])
 @router.get('/info')
 async def get_settings(user: Annotated[User, Depends(JWTBearer())]):
     cm_futures_client = await api_authorise(login=user.login)
-    exchange = cm_futures_client.exchange_info()
+    exchange = cm_futures_client.get_exchange_info()
     data = []
     for pair in exchange['symbols']:
         data.append(pair)
@@ -39,14 +39,28 @@ async def get_settings(symbol: str, interval: str, user: Annotated[User, Depends
       ]
     ]"""
     cm_futures_client = await api_authorise(login=user.login)
-    return cm_futures_client.klines(symbol, interval, limit=3)
+    return cm_futures_client.get_klines(symbol=symbol, interval=interval, limit=3)
+
+
+@router.get('/new_order')
+async def create_order(symbol: str, side: str, type: str, quantity: float, price: float, user: Annotated[User, Depends(JWTBearer())]):
+    client = await api_authorise(login=user.login)
+    quantity = float(round(quantity, 8))
+    price = float(round(price, 8))
+    buy_order = client.futures_create_order(symbol=symbol,
+                                            side=side,
+                                            type=type,
+                                            quantity=quantity,
+                                            timeInForce="GTC",
+                                            price=price)
+    return buy_order
 
 
 async def api_authorise(login):
     user = models.User.get(login=login)
     try:
         params = models.UserSettings.get(user=user.id)
-        cm_futures_client = CMFutures(key=params.api_key, secret=params.secret_key, base_url="https://testnet.binancefuture.com/")
-        return cm_futures_client
+        client = Client(api_key=params.api_key, api_secret=params.secret_key, testnet=True)
+        return client
     except:
         raise HTTPException(403, detail="Failed to authorise in Binance API")
