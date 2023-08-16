@@ -39,7 +39,7 @@ export default component$(() => {
                   </ul>
                </details>
                </li>
-               <span class="mt-3 m-4"><ThemeSwitchBtn/></span>
+               <span class="mr-3"><ThemeSwitchBtn/></span>
                {auth.value.length > 8 ?
                   <LogoutBtn/>
                :
