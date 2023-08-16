@@ -1,7 +1,5 @@
 import { component$ } from "@builder.io/qwik";
 
-
-
 export default component$(() => {
    const nameScript = `
     new TradingView.widget({
@@ -21,16 +19,14 @@ export default component$(() => {
             "studies": [
                "STD;RSI"
             ],
-            "container_id": "tradingview_3c5e9"
+            "container_id": "tradingview_c1b8a"
          });`;
   return (
     <>
       <div class="tradingview-widget-container">
       <div id="tradingview_c1b8a"></div>      
-      <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-         <script dangerouslySetInnerHTML={nameScript} />
+      <script dangerouslySetInnerHTML={nameScript} />
       </div>
-
     </>
   );
 });
