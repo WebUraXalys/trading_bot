@@ -12,7 +12,7 @@ router = APIRouter(prefix="/exchange", tags=['exchange operations'])
 @router.get('/info')
 async def get_settings(user: Annotated[User, Depends(JWTBearer())]):
     cm_futures_client = await api_authorise(login=user.login)
-    exchange = cm_futures_client.get_exchange_info()
+    exchange = cm_futures_client.futures_exchange_info()
     data = []
     for pair in exchange['symbols']:
         data.append(pair)
@@ -39,7 +39,7 @@ async def get_settings(symbol: str, interval: str, user: Annotated[User, Depends
       ]
     ]"""
     cm_futures_client = await api_authorise(login=user.login)
-    return cm_futures_client.get_klines(symbol=symbol, interval=interval, limit=3)
+    return cm_futures_client.futures_klines(symbol=symbol, interval=interval, limit=3)
 
 
 @router.get('/new_order')
@@ -47,13 +47,13 @@ async def create_order(symbol: str, side: str, type: str, quantity: float, price
     client = await api_authorise(login=user.login)
     quantity = float(round(quantity, 8))
     price = float(round(price, 8))
-    buy_order = client.futures_create_order(symbol=symbol,
+    order = client.futures_create_order(symbol=symbol,
                                             side=side,
                                             type=type,
                                             quantity=quantity,
                                             timeInForce="GTC",
                                             price=price)
-    return buy_order
+    return order
 
 
 async def api_authorise(login):
