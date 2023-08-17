@@ -31,8 +31,8 @@ export default component$(() => {
             <option disabled selected>
               Обиріть торгову пару
             </option>
-            {pairs.value.ok ? pairs.value.data.data.map((pair: any) => (
-                <option key={pair.pair} value="">{pair.pair}</option>
+            {pairs.value.ok ? pairs.value.data.data.map((symbol: any) => (
+                <option key={symbol.symbol} value="">{symbol.symbol}</option>
                 )) : <option>Немає API ключа</option>}
           </select> 
       </div>
