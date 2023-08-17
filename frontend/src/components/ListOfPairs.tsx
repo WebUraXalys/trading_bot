@@ -37,7 +37,14 @@ export default component$(() => {
     {action.value?.ok ? <div class="alert alert-success">Успішно отримано інформацію по парі</div> : null}
     <ul>
       {action.value?.data.map((el: any) => (
-        <li class="alert alert-info" key={el}>{el}</li>
+        <li key={el}><ul class="alert alert-info">
+            <li>Open time: {el[0]}</li>
+            <li>Open price: {el[1]}</li>
+            <li>High price: {el[2]}</li>
+            <li>Low price: {el[3]}</li>
+            <li>Close price: {el[4]}</li>
+        </ul></li>
+        
       ))}
     </ul>
     </>
