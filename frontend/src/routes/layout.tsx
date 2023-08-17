@@ -74,7 +74,7 @@ export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
 export const useGetPairs = routeLoader$(async (requestEvent) => {
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
-    const res = await fetch(`http://127.0.0.1:8000/exchange/info`, {
+    return await fetch(`http://127.0.0.1:8000/exchange/info`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -82,14 +82,16 @@ export const useGetPairs = routeLoader$(async (requestEvent) => {
       "Content-Type": "application/json"
     }
     }).then(async (r) => {
-      const res = await r.json();
       if (r.status == 200) {
-        return res;
+        const rr = await r.json();
+        return {ok: true, data: rr.data};
+      }
+      else {
+        return {ok: false, data: {}};
       }
     });
-    return {ok: true, data: res}
   }
-  return {ok: false, data: {}}
+  return {ok: false, data: {}};
 });
 
 
@@ -120,7 +122,7 @@ export const useSignIn = routeAction$(async (data, { fail }) => {
   return fetch(`http://127.0.0.1:8000/auth/signin?login=${data.login}&password=${data.password}`, {method: "POST"}).then(async (resp) => {
     if (resp.status == 200) {
       const data = await resp.json();
-      return {"ok": true, "data": data}
+      return {"ok": true, "data": data};
     }
     else {
       return fail(401, {message: "Неправильний логін або пароль"});
@@ -134,6 +136,27 @@ zod$((z) => {
   })
 })
 );
+
+export const useSearchPairInfo = routeAction$(async (data, requestEvent) => {
+  if (requestEvent.cookie.has("auth")) {
+    const userAuth = requestEvent.cookie.get("auth");
+    return fetch(`http://127.0.0.1:8000/exchange/pair_info?symbol=${data.symbol}&interval=${data.interval}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Authorization": `Bearer ${userAuth?.value}`
+      }}).then(async (resp) => {
+      if (resp.status == 200) {
+        const data = await resp.json();
+        return {"ok": true, "data": data};
+      }
+      else {
+        return requestEvent.fail(400, {message: "Пару не знайдено"});
+      }
+    });
+  }
+  return requestEvent.fail(400, {message: "Яким блін чином ти взагалі зміг відправити цей запит?"});
+});
 
 export const useSaveKeys = routeAction$(async (data, requestEvent ) => {
   if (requestEvent.cookie.has("auth")) {

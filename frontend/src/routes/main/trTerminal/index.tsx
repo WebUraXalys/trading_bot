@@ -19,13 +19,13 @@ export default component$(() => {
           <div class="form-control">
             <label class="label cursor-pointer">
               <span class="label-text mr-3">Список свічок </span> 
-              <input type="checkbox" checked="checked" class="checkbox" />
+              <input type="checkbox" checked class="checkbox" />
             </label>
           </div>
           <div class="form-control">
             <label class="label cursor-pointer">
               <span class="label-text mr-3">Калькулятор </span> 
-              <input type="checkbox" checked="checked" class="checkbox" />
+              <input type="checkbox" checked class="checkbox" />
             </label>
           </div>
         </div>
