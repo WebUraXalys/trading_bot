@@ -1,7 +1,5 @@
 import { component$, useStore, useContext, useSignal, $ } from "@builder.io/qwik";
-import { Form } from "@builder.io/qwik-city";
 import { useGetPairs } from "~/routes/layout";
-import { useSearchPairInfo } from "~/routes/layout";
 import axios from 'axios';
 import { authContext } from "~/routes/layout";
 
@@ -15,10 +13,10 @@ export default component$(() => {
   // const action = useSearchPairInfo();
   const action = useStore({
     
-    ok: undefined,
-    failed: undefined,
-    message: undefined,
-    data: undefined,
+    ok: false,
+    failed: false,
+    message: "",
+    data: [],
     updateSearchPairInfo: $(async function (this: any) {
       const startTime = performance.now();
       const resp = await axios.get(`http://127.0.0.1:8000/exchange/pair_info`, {
@@ -71,7 +69,7 @@ export default component$(() => {
     {action.failed ? <div class="alert alert-error">{action.message}</div> : null}
     {action.ok ? <div class="alert alert-success">Успішно отримано інформацію по парі</div> : null}
     <ul>
-      {action.data?.map((el: any) => (
+      {action.data.map((el: any) => (
         <li key={el}><ul class="alert alert-info">
             <li>Open time: {el[0]}</li>
             <li>Open price: {el[1]}</li>

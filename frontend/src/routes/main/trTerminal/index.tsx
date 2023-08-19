@@ -1,12 +1,6 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
-import type { RequestHandler } from '@builder.io/qwik-city';
-
-// export const onRequest: RequestHandler = async (requestEvent) => {
-//   requestEvent.headers.set("Access-Control-Allow-Origin", "localhost");
-//   // await requestEvent.next();
-// };
 
 export default component$(() => {
   const isOpen = useSignal(false);
