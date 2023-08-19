@@ -1,4 +1,4 @@
-import { component$, useStore, useContext, useSignal, $ } from "@builder.io/qwik";
+import { component$, useStore, useContext, useSignal, $, useComputed$ } from "@builder.io/qwik";
 import { useGetPairs } from "~/routes/layout";
 import axios from 'axios';
 import { authContext } from "~/routes/layout";
@@ -8,11 +8,16 @@ export default component$(() => {
   const auth = useContext(authContext)
   const symbolValue = useSignal<string>("");
   const intervalValue = useSignal<string>("");
+  const btnDisabled = useComputed$(() => {
+    if (symbolValue.value.length < 4 || intervalValue.value.length < 2) {
+      return true;
+    }
+    return false;
+  });
 
   const pairs = useGetPairs();
   // const action = useSearchPairInfo();
   const action = useStore({
-    
     ok: false,
     failed: false,
     message: "",
@@ -67,7 +72,7 @@ export default component$(() => {
         <option>4h</option>
       </select>
       <div class="indicator tooltip tooltip-bottom" data-tip="Виберіть пару та інтервал">
-        <button class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
+        <button disabled={btnDisabled.value} class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
       </div>
     </div>
     {/* </Form> */}
