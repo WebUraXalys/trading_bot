@@ -1,6 +1,7 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
+import TWLoad from "~/components/TWLoad";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
@@ -30,15 +31,13 @@ export default component$(() => {
             </label>
           </div>
         </div>
-        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-        {isOpen.value ? <WidgetTradingView/> : <div class="hidden"></div>} 
+        {isOpen.value ? <WidgetTradingView /> : <div class="hidden"></div>} 
       </div>
       <div class="right">
         <ListOfPairs />
       </div>
     </div>
-      
-      
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     </>
   );
 });
