@@ -1,6 +1,7 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
+import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const isOpen = useSignal(false);
@@ -41,3 +42,8 @@ export default component$(() => {
     </>
   );
 });
+
+export const head: DocumentHead = {
+  title: "Термінал | Trading Bot",
+};
+

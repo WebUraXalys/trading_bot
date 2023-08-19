@@ -1,7 +1,7 @@
 import {component$, useContext } from '@builder.io/qwik';
 import LoginForm from '~/components/LoginForm';
 import { authContext } from '../layout';
-
+import type { DocumentHead } from '@builder.io/qwik-city';
  
 export default component$(() => {
   const auth = useContext(authContext);
@@ -14,3 +14,7 @@ export default component$(() => {
     </>
   )
 });
+
+export const head: DocumentHead = {
+  title: "Вхід | Trading Bot",
+};

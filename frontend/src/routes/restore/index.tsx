@@ -1,5 +1,6 @@
 import {component$, useContext } from '@builder.io/qwik';
 import { authContext } from '../layout';
+import type { DocumentHead } from '@builder.io/qwik-city';
 
  
 export default component$(() => {
@@ -23,3 +24,8 @@ export default component$(() => {
     </>
   )
 });
+
+export const head: DocumentHead = {
+  title: "Відновлення | Trading Bot"
+};
+
