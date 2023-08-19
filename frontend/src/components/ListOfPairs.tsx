@@ -18,6 +18,11 @@ export default component$(() => {
     message: "",
     data: [],
     updateSearchPairInfo: $(async function (this: any) {
+      if (symbolValue.value.length < 4 || intervalValue.value.length < 2) {
+        this.failed = true;
+        this.message = "Потрібно щось вибрати";
+        return;
+      }
       const startTime = performance.now();
       const resp = await axios.get(`http://127.0.0.1:8000/exchange/pair_info`, {
         params: {
@@ -61,7 +66,7 @@ export default component$(() => {
         <option>2h</option>
         <option>4h</option>
       </select>
-      <div class="indicator">
+      <div class="indicator tooltip tooltip-bottom" data-tip="Виберіть пару та інтервал">
         <button class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
       </div>
     </div>
