@@ -46,7 +46,6 @@ export const useGetTheme = routeLoader$(async (requestEvent) => {
   }
 });
 
-
 export const useGetAPIKeys = routeLoader$(async (requestEvent) => {
   if (requestEvent.cookie.has("auth")) {
     const userAuth = requestEvent.cookie.get("auth");
