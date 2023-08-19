@@ -39,7 +39,7 @@ export default component$(() => {
                   </ul>
                </details>
                </li>
-               <span class="mr-3"><ThemeSwitchBtn/></span>
+               <span class="mr-3 tooltip tooltip-bottom" data-tip="Зміна теми"><ThemeSwitchBtn/></span>
                {auth.value.length > 8 ?
                   <LogoutBtn/>
                :
