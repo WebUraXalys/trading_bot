@@ -28,7 +28,6 @@ export default component$(() => {
         this.message = "Потрібно щось вибрати";
         return;
       }
-      const startTime = performance.now();
       const resp = await axios.get(`http://127.0.0.1:8000/exchange/pair_info`, {
         params: {
           symbol: symbolValue.value,
@@ -38,7 +37,6 @@ export default component$(() => {
           Authorization: `Bearer ${auth.value}`
         }
       });
-      const endTime = performance.now();
       if (resp.status == 200) {
         this.data = resp.data;
         this.ok = true;
@@ -47,7 +45,6 @@ export default component$(() => {
         this.failed = true;
         this.message = "Виникла помилка. Зверніться до адміністрації"
       }
-      console.log(`Call to doSomething took ${endTime - startTime} milliseconds`);
     })
   });
 
