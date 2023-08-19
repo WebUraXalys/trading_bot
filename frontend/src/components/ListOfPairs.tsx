@@ -23,7 +23,7 @@ export default component$(() => {
     message: "",
     data: [],
     updateSearchPairInfo: $(async function (this: any) {
-      if (symbolValue.value.length < 4 || intervalValue.value.length < 2) {
+      if (btnDisabled.value) {
         this.failed = true;
         this.message = "Потрібно щось вибрати";
         return;
@@ -73,11 +73,11 @@ export default component$(() => {
       </div>
     </div>
     {/* </Form> */}
-    {action.failed ? <div class="alert alert-error">{action.message}</div> : null}
-    {action.ok ? <div class="alert alert-success">Успішно отримано інформацію по парі</div> : null}
+    {action.failed ? <div class="alert alert-error mt-2">{action.message}</div> : null}
+    {action.ok ? <div class="alert alert-success mt-2">Успішно отримано інформацію по парі</div> : null}
     <ul>
       {action.data.map((el: any) => (
-        <li key={el}><ul class="alert alert-info">
+        <li key={el}><ul class="alert alert-info mt-2">
             <li>Open time: {el[0]}</li>
             <li>Open price: {el[1]}</li>
             <li>High price: {el[2]}</li>
