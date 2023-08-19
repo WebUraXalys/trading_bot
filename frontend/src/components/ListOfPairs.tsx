@@ -6,8 +6,8 @@ import { authContext } from "~/routes/layout";
 
 export default component$(() => {
   const auth = useContext(authContext)
-  const symbolValue = useSignal<string>();
-  const intervalValue = useSignal<string>();
+  const symbolValue = useSignal<string>("");
+  const intervalValue = useSignal<string>("");
 
   const pairs = useGetPairs();
   // const action = useSearchPairInfo();
