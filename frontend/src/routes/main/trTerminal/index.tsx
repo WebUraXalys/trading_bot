@@ -1,7 +1,6 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
-import TWLoad from "~/components/TWLoad";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 export default component$(() => {

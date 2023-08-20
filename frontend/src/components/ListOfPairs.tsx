@@ -22,12 +22,14 @@ export default component$(() => {
     failed: false,
     message: "",
     data: [],
+    inAction: false,
     updateSearchPairInfo: $(async function (this: any) {
       if (btnDisabled.value) {
         this.failed = true;
         this.message = "Потрібно щось вибрати";
         return;
       }
+      this.inAction = true;
       const resp = await axios.get(`http://127.0.0.1:8000/exchange/pair_info`, {
         params: {
           symbol: symbolValue.value,
@@ -37,9 +39,15 @@ export default component$(() => {
           Authorization: `Bearer ${auth.value}`
         }
       });
+      this.inAction = false;
       if (resp.status == 200) {
         this.data = resp.data;
         this.ok = true;
+      }
+      else if (resp.status == 401) {
+        this.failed = true;
+        auth.value = "";
+        this.message = "Час сесії закінчився"
       }
       else {
         this.failed = true;
@@ -68,8 +76,8 @@ export default component$(() => {
         <option>2h</option>
         <option>4h</option>
       </select>
-      <div class="indicator tooltip tooltip-bottom" data-tip="Виберіть пару та інтервал">
-        <button disabled={btnDisabled.value} class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
+      <div class={`indicator ${btnDisabled.value ? 'tooltip tooltip-bottom' : ''}`} data-tip="Виберіть пару та інтервал">
+        <button disabled={btnDisabled.value || action.inAction} class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
       </div>
     </div>
     {/* </Form> */}
