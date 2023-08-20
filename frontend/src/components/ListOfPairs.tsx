@@ -37,7 +37,8 @@ export default component$(() => {
         },
         headers: {
           Authorization: `Bearer ${auth.value}`
-        }
+        },
+        withCredentials: true
       });
       this.inAction = false;
       if (resp.status == 200) {
