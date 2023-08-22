@@ -17,7 +17,7 @@ def signin(login: str, password: str):
         print(e)
         raise HTTPException(404, detail="User not found")
     if argon2.verify_password(bytes(user.hashed_password, 'utf-8'), bytes(password, 'utf-8')):
-        token = {"login": user.login, "exp": datetime.datetime.now() + datetime.timedelta(hours=2)}
+        token = {"id": user.id, "login": login, "exp": datetime.datetime.now() + datetime.timedelta(hours=2)}
         secret = settings.SECRET
         return {"key": jwt.encode(token, secret, algorithm="HS256")}
     else:

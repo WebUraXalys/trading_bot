@@ -14,7 +14,7 @@ class JWTBearer(HTTPBearer):
         credentials: HTTPAuthorizationCredentials = await super().__call__(request=request)
         if credentials:
             if credentials.scheme != "Bearer":
-                raise HTTPException(401, detail="Wrong auth sceme")
+                raise HTTPException(401, detail="Wrong auth scheme")
             try:
                 secret = settings.SECRET
                 token = jwt.decode(credentials.credentials, secret, algorithms=["HS256"])
