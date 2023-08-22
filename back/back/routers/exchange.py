@@ -2,7 +2,6 @@ import jwt
 import time
 from fastapi import APIRouter, Depends
 from typing import Annotated
-from fastapi import HTTPException
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from back.dto.user import User
@@ -87,6 +86,13 @@ async def set_leverage(token: Annotated[User, Depends(JWTBearer())], symbol: str
     client, token = await api_authorise(token)  # Authentication
     client.futures_change_leverage(symbol=symbol, leverage=leverage)  # Setting leverage
     return {"token": token}
+
+
+@router.get('/get_orders')
+async def get_orders(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
+    client, token = await api_authorise(token)
+    orders = client.futures_get_all_orders(symbol=symbol)
+    return {"token": token, "data": orders}
 
 
 @router.get('/new_order')
