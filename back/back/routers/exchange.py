@@ -1,7 +1,7 @@
 import jwt
 import time
 from fastapi import APIRouter, Depends
-from typing import Annotated
+from typing import Annotated, Dict
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from back.dto.user import User
@@ -15,6 +15,9 @@ router = APIRouter(prefix="/exchange", tags=['exchange operations'])
 class NoPingClient(Client):
     def ping(self):
         return None
+
+    def get_server_time(self) -> Dict:
+        return {"serverTime": time.time()}
 
 
 @router.get('/info')
