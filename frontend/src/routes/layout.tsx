@@ -193,7 +193,7 @@ export default component$(() => {
   const auth = useSignal(av);
   useContextProvider(authContext, auth);
   useComputed$(() => {
-    Cookies.set("auth", auth.value, {sameSite: "strict", secure: true, "Max-Age": "3600"});
+    Cookies.set("auth", auth.value, {sameSite: "strict", secure: true, "Max-Age": "7190"});
   });
 
   const lsTheme = useGetTheme().value;
