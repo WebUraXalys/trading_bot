@@ -119,7 +119,7 @@ async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str
                                     price=price)
         return order
     except BinanceAPIException as e:
-        raise HTTPException(status_code=406, detail=e)
+        raise HTTPException(status_code=406, detail=str(e))
 
 
 async def get_precision(client, type, quantity, price, symbol):
