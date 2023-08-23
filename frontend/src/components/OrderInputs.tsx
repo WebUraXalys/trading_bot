@@ -46,7 +46,8 @@ export default component$<ItemProps>((props) => {
         headers: {
           Authorization: `Bearer ${auth.value}`
         },
-        withCredentials: true
+        withCredentials: true,
+        validateStatus: () => true
       });
       return resp;
    });
@@ -134,11 +135,11 @@ export default component$<ItemProps>((props) => {
             }}>Sell/Short</button>
          </div>
          {action.ok ? 
-         <ul>
-            <button class="btn btn-secondary" onClick$={() => (
-               console.log(action.data)
-    )}>FUCK IT!</button>
-         </ul>
+         <div class="alert alert-success">Успішно!</div>
+         : null
+         }
+         {action.failed ?
+         <div class="alert alert-error">{action.message}</div>
          : null
          }
          

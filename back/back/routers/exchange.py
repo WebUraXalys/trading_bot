@@ -96,7 +96,7 @@ async def get_orders(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
 
 
 @router.get('/new_order')
-async def create_order(user: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None):
+async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None):
     """
 
     :param side: BUY or SELL

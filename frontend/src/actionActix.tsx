@@ -16,19 +16,22 @@ export type actionStore = {
 export const updateGetAction = $(async function (this: actionStore, resp_fn: any, auth: Signal<string>) {
     this.inAction = true;
     const resp = await resp_fn(this);
+    console.log(resp);
     this.inAction = false;
 
-    if (resp.status == 200) {
+    if (resp.status === 200) {
         this.data = resp.data;
         this.ok = true;
     }
-
-    if (resp.status == 401) {
+    else if (resp.status === 401) {
         this.failed = true;
-        this.message = "Час сесії закінчився";
+        this.message = "Час сесії закінчився. Вам потрібно заново ввійти вакаунт"
         auth.value = "";
     }
-
+    else if (resp.status === 406) {
+        this.failed = true;
+        this.message = resp.data.detail
+    }
     else {
         this.failed = true;
         this.message = "Сталась помилка, зверніться до адміністрації";

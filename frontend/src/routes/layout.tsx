@@ -83,7 +83,7 @@ export const useGetPairs = routeLoader$(async (requestEvent) => {
     }).then(async (r) => {
       if (r.status == 200) {
         const rr = await r.json();
-        return {ok: true, data: rr.data};
+        return {ok: true, data: rr};
       }
       else {
         return {ok: false, data: {}};
