@@ -1,5 +1,4 @@
 import { component$, useContext, useComputed$, type Signal, useSignal} from "@builder.io/qwik";
-import { Link } from "@builder.io/qwik-city";
 // interface ItemProps {
 //   limit?: string;
 //   market?: string;
@@ -15,53 +14,75 @@ import { Link } from "@builder.io/qwik-city";
 
 
 export default component$(() => {
-   // const activeBtn = useComputed$(() => {
-   // })
    const limitBtn = useSignal('tab');
    const marketBtn = useSignal('tab-active');
+   const isChecked = useSignal(false);
 
 
     return (
         <>
       {/* <Item market="" limit="" /> */}
-         <div class="tabs">
-            <a class={[ limitBtn.value, 'tab']} onClick$={() => {marketBtn.value = 'tab'; limitBtn.value='tab-active'}}>Limit</a> 
-            <a class={[ marketBtn.value, 'tab']} onClick$={() => {limitBtn.value = 'tab'; marketBtn.value='tab-active'}}>Market</a> 
+         <div class="tabs mt-5">
+            <a class={[ limitBtn.value, 'tab', 'text-lg']} onClick$={() => {marketBtn.value = 'tab'; limitBtn.value='tab-active'}}>Limit</a> 
+            <a class={[ marketBtn.value, 'tab', 'text-lg']} onClick$={() => {limitBtn.value = 'tab'; marketBtn.value='tab-active'}}>Market</a> 
         </div>
+        <div class="inputs_order mb-5">
         {marketBtn.value == "tab-active" ? <div class="input_for_market">
-            <div class="form-control">
-               {/* <label class="label">
-                  <span class="label-text">Enter amount</span>
-               </label> */}
+            <div class="form-control mt-2">
                <label class="input-group">
                   <span>Price</span>
                   <input type="text" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
-            <div class="form-control">
-               {/* <label class="label">
-                  <span class="label-text">Enter amount</span>
-               </label> */}
+            <div class="form-control mt-2">
                <label class="input-group">
-                  <span>Size</span>
+                  <span class="pr-[22px]">Size</span>
                   <input type="text" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
          </div> : <div class="input_for_limit">
-            <div class="form-control">
-               {/* <label class="label">
-                  <span class="label-text">Enter amount</span>
-               </label> */}
+            <div class="form-control mt-2">
                <label class="input-group">
-                  <span>Size</span>
+                  <span class="pr-[22px]">Size</span>
                   <input type="text" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
          </div>}
+         </div>
+         <hr />
+         <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text mr-3">Take Profit/ Stop Loss {isChecked.value}</span> 
+              <input type="checkbox" class="checkbox" bind:checked={isChecked} />
+            </label>
+          </div>
+          {isChecked.value ? 
+          <div class="inputs_tp_sl">
+            <div class="form-control">
+               <label class="label">
+                  <span class="label-text">Take Profit</span>
+               </label>
+               <label class="input-group ">
+                  <input type="text" placeholder="11" class="input input-bordered w-[76%]" />
+                  <span>USDT</span>
+               </label>
+            </div>
+            <div class="form-control">
+               <label class="label">
+                  <span class="label-text">Stop Loss</span>
+               </label>
+               <label class="input-group">
+                  <input type="text" placeholder="9" class="input input-bordered w-[76%]" />
+                  <span>USDT</span>
+               </label>
+             </div>
+          </div>
+          : null} 
          
+      
          </>
     )
 });
