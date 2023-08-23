@@ -2,10 +2,11 @@ import { component$, useStore, useContext, useSignal, $, useComputed$ } from "@b
 import { useGetPairs } from "~/routes/layout";
 import axios from 'axios';
 import { authContext } from "~/routes/layout";
+import OrderInputs from "./OrderInputs";
 
 
 export default component$(() => {
-  const auth = useContext(authContext)
+  const auth = useContext(authContext);
   const symbolValue = useSignal<string>("");
   const intervalValue = useSignal<string>("");
   const btnDisabled = useComputed$(() => {
@@ -96,6 +97,7 @@ export default component$(() => {
         
       ))}
     </ul>
+    <OrderInputs symbol={symbolValue.value}/>
     </>
   );
 });

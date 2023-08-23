@@ -1,8 +1,10 @@
-import { component$, useContext, useComputed$, type Signal, useSignal} from "@builder.io/qwik";
-// interface ItemProps {
-//   limit?: string;
-//   market?: string;
-// }
+import { component$, useContext, useComputed$, useSignal, useStore, $} from "@builder.io/qwik";
+import { type actionStore, updateGetAction } from "~/actionActix";
+import { authContext } from "~/routes/layout";
+import axios from "axios";
+interface ItemProps {
+  symbol: string;
+}
 // export const Item = component$<ItemProps>((props) => {
 //   return (
 //       <div class="tabs">
@@ -13,10 +15,47 @@ import { component$, useContext, useComputed$, type Signal, useSignal} from "@bu
 // });
 
 
-export default component$(() => {
+export default component$<ItemProps>((props) => {
    const limitBtn = useSignal('tab');
    const marketBtn = useSignal('tab-active');
+   const orderType = useComputed$(() => {
+      if (limitBtn.value == "tab") {
+         return "MARKET";
+      }
+      else {
+         return "LIMIT";
+      }
+   });
    const isChecked = useSignal(false);
+   const auth = useContext(authContext);
+   const side = useSignal("BUY");
+   const quantity = useSignal<string>();
+   const price = useSignal<string>();
+
+
+   const respFn = $(async function (self: actionStore) {
+      const resp = await axios.get(self.endpoint_url, {
+        params: {
+          symbol: props.symbol,
+          side: side.value,
+          type: orderType.value,
+          quantity: quantity.value,
+          timeInForce: "GTC",
+          price: price.value,
+        },
+        headers: {
+          Authorization: `Bearer ${auth.value}`
+        },
+        withCredentials: true
+      });
+      return resp;
+   });
+
+   const action = useStore<actionStore>({
+      inAction: false,
+      endpoint_url: "http://127.0.0.1:8000/exchange/new_order",
+      updateGetAction: updateGetAction,
+   })
 
 
     return (
@@ -32,14 +71,14 @@ export default component$(() => {
             <div class="form-control mt-2">
                <label class="input-group">
                   <span>Price</span>
-                  <input type="text" placeholder="10" class="input input-bordered" />
+                  <input bind:value={price} type="number" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
             <div class="form-control mt-2">
                <label class="input-group">
                   <span class="pr-[22px]">Size</span>
-                  <input type="text" placeholder="10" class="input input-bordered" />
+                  <input bind:value={quantity} type="number" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
@@ -48,7 +87,7 @@ export default component$(() => {
             <div class="form-control mt-2">
                <label class="input-group">
                   <span class="pr-[22px]">Size</span>
-                  <input type="text" placeholder="10" class="input input-bordered" />
+                  <input bind:value={quantity} type="number" placeholder="10" class="input input-bordered" />
                   <span>USDT</span>
                </label>
             </div>
@@ -68,16 +107,16 @@ export default component$(() => {
                   <span class="label-text">Take Profit</span>
                </label>
                <label class="input-group ">
-                  <input type="text" placeholder="11" class="input input-bordered w-[76%]" />
+                  <input type="number" placeholder="11" class="input input-bordered w-[76%]" />
                   <span>USDT</span>
                </label>
             </div>
             <div class="form-control">
                <label class="label">
-                  <span class="label-text">Stop Loss</span>
+                  <span class="label-number">Stop Loss</span>
                </label>
                <label class="input-group">
-                  <input type="text" placeholder="9" class="input input-bordered w-[76%]" />
+                  <input type="number" placeholder="9" class="input input-bordered w-[76%]" />
                   <span>USDT</span>
                </label>
              </div>
@@ -85,8 +124,14 @@ export default component$(() => {
           : null} 
          <hr />
          <div class="buttons mt-6 flex justify-around">
-            <button class="btn bg-[#0ecb81] text-white">Buy/Long</button>
-            <button class="btn bg-[#f6465d] text-white">Sell/Short</button>
+            <button class="btn bg-[#0ecb81] text-white" onClick$={() => {
+               side.value = "BUY";
+               action.updateGetAction(respFn, auth);
+            }}>Buy/Long</button>
+            <button class="btn bg-[#f6465d] text-white" onClick$={() => {
+               side.value = "SELL";
+               action.updateGetAction(respFn, auth);
+            }}>Sell/Short</button>
          </div>
          </>
     )

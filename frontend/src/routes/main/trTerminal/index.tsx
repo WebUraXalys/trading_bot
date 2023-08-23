@@ -38,7 +38,7 @@ export default component$(() => {
       </div>
       <div class="right w-[30%] max-w-[350px]">
         <ListOfPairs />
-        <OrderInputs/>
+        {/* <OrderInputs/> */}
       </div>
     </div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
