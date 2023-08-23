@@ -40,7 +40,7 @@ export default component$<ItemProps>((props) => {
           side: side.value,
           type: orderType.value,
           quantity: quantity.value,
-          timeInForce: "GTC",
+         //  timeInForce: "GTC",
           price: price.value,
         },
         headers: {
@@ -133,6 +133,15 @@ export default component$<ItemProps>((props) => {
                action.updateGetAction(respFn, auth);
             }}>Sell/Short</button>
          </div>
+         {action.ok ? 
+         <ul>
+            <button class="btn btn-secondary" onClick$={() => (
+               console.log(action.data)
+    )}>FUCK IT!</button>
+         </ul>
+         : null
+         }
+         
          </>
     )
 });

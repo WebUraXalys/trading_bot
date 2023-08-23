@@ -99,7 +99,7 @@ async def get_orders(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
 
 
 @router.get('/new_order')
-async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None):
+async def create_order(user: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None):
     """
 
     :param side: BUY or SELL
@@ -110,9 +110,9 @@ async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str
     :param token:
     :return: data about order
     """
-    client, token = await api_authorise(token)  # Authentication
+    client, token = await api_authorise(user)  # Authentication
 
-    quantity, price = await get_precision(token, type, quantity, price, symbol)
+    quantity, price = await get_precision(user, type, quantity, price, symbol)
 
     return {"token": token, "data": client.futures_create_order(symbol=symbol,
                                                                     side=side,

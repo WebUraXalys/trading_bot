@@ -4,7 +4,7 @@ export type actionStore = {
     inAction: boolean,
 
     ok?: boolean,
-    data?: object,
+    data?: any,
 
     failed?: boolean,
     message?: string,
