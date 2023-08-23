@@ -2,6 +2,7 @@ import { component$, useSignal } from "@builder.io/qwik";
 import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
 import type { DocumentHead } from "@builder.io/qwik-city";
+import OrderInputs from "~/components/OrderInputs";
 
 export default component$(() => {
   const isOpen = useSignal(false);
@@ -34,6 +35,7 @@ export default component$(() => {
       </div>
       <div class="right w-[30%] max-w-[350px]">
         <ListOfPairs />
+        <OrderInputs/>
       </div>
     </div>
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
