@@ -6,7 +6,6 @@ from binance.client import Client
 from binance.exceptions import BinanceAPIException
 from back.dto.user import User
 from back.db import models
-from back.settings import settings
 from back.auth.authentication import JWTBearer
 
 router = APIRouter(prefix="/exchange", tags=['exchange operations'])
@@ -19,13 +18,12 @@ class NoPingClient(Client):
 
 @router.get('/info')
 async def get_pairs(token: Annotated[User, Depends(JWTBearer())]):
-    client, token = await api_authorise(token)
-    start = time.time()
+    client = await api_authorise(token)
     exchange = client.futures_exchange_info()
     data = []
     for pair in exchange['symbols']:
         data.append(pair)
-    return {"token": token, "data": data}
+    return data
 
 
 @router.get('/pair_info')
@@ -47,14 +45,14 @@ async def get_pair_klines(symbol: str, interval: str, token: Annotated[User, Dep
         "0"                     // Ignore.
       ]
     ]"""
-    client, token = await api_authorise(token)
-    return {"token": token, "data": client.futures_klines(symbol=symbol, interval=interval, limit=3)}
+    client = await api_authorise(token)
+    return client.futures_klines(symbol=symbol, interval=interval, limit=3)
 
 
 @router.get('/position_status')
 async def get_position(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
-    client, token = await api_authorise(token)  # Authentication
-    return {"token": token, "data": client.futures_position_information(symbol=symbol)}
+    client = await api_authorise(token)  # Authentication
+    return client.futures_position_information(symbol=symbol)
 
 
 @router.get('/set_margin')
@@ -66,13 +64,12 @@ async def set_margin(symbol: str, margin_type: str, token: Annotated[User, Depen
     :param margin_type: ISOLATED or CROSSED
     """
 
-    client, token = await api_authorise(token)  # Authentication
+    client = await api_authorise(token)  # Authentication
     try:
         # Setting margin type ISOLATED or CROSSED
         client.futures_change_margin_type(symbol=symbol, marginType=margin_type)
-        return {"token": token}
     except BinanceAPIException as error:
-        return {"token": token, "error": error}
+        return {"error": error}
 
 
 @router.get('/set_leverage')
@@ -83,16 +80,15 @@ async def set_leverage(token: Annotated[User, Depends(JWTBearer())], symbol: str
     :param symbol: for example BNBUSDT
     :param leverage: integer x1-x100
     """
-    client, token = await api_authorise(token)  # Authentication
+    client = await api_authorise(token)  # Authentication
     client.futures_change_leverage(symbol=symbol, leverage=leverage)  # Setting leverage
-    return {"token": token}
 
 
 @router.get('/get_orders')
 async def get_orders(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
-    client, token = await api_authorise(token)
+    client = await api_authorise(token)
     orders = client.futures_get_all_orders(symbol=symbol)
-    return {"token": token, "data": orders}
+    return orders
 
 
 @router.get('/new_order')
@@ -107,24 +103,22 @@ async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str
     :param token:
     :return: data about order
     """
-    client, token = await api_authorise(token)  # Authentication
+    client = await api_authorise(token)  # Authentication
 
-    quantity, price = await get_precision(token, type, quantity, price, symbol)
+    quantity, price = await get_precision(client, type, quantity, price, symbol)
 
-    return {"token": token, "data": client.futures_create_order(symbol=symbol,
+    return client.futures_create_order(symbol=symbol,
                                                                     side=side,
                                                                     type=type,
                                                                     quantity=quantity,
                                                                     timeInForce=timeInForce,
-                                                                    price=price)}
+                                                                    price=price)
 
 
-async def get_precision(token, type, quantity, price, symbol):
+async def get_precision(client, type, quantity, price, symbol):
     # Default values
     price_precision = 8
     quantity_precision = 8
-
-    client, token = await api_authorise(token)  # Authentication
 
     for pair in client.futures_exchange_info()["symbols"]:
         if pair['symbol'] == symbol:
@@ -149,8 +143,8 @@ async def api_authorise(token):
 
     try:
         client = NoPingClient(api_key=api_key, api_secret=secret_key, testnet=True)
-        token = {"id": token.id, "login": token.login, "exp": token.exp, "api_key": api_key, "secret_key": secret_key}
-        secret = settings.SECRET
-        return client, jwt.encode(token, secret, algorithm="HS256")
+        # token = {"id": token.id, "login": token.login, "exp": token.exp, "api_key": api_key, "secret_key": secret_key}
+        # secret = settings.SECRET
+        return client
     except BinanceAPIException as e:
         print(e)
