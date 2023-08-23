@@ -8,8 +8,8 @@ export default component$(() => {
 
   return (
     <>
-    <div class="main_tr flex">
-      <div class="left">
+    <div class="main_tr flex ">
+      <div class="left w-[70%]">
         <div class="checkbox_form flex justify-around">
           <div class="form-control">
             <label class="label cursor-pointer">
@@ -32,7 +32,7 @@ export default component$(() => {
         </div>
         {isOpen.value ? <WidgetTradingView /> : <div class="hidden"></div>} 
       </div>
-      <div class="right">
+      <div class="right w-[30%] max-w-[350px]">
         <ListOfPairs />
       </div>
     </div>

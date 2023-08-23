@@ -64,7 +64,7 @@ export default component$(() => {
       <div>
         <select name="symbol" class="select select-bordered join-item" bind:value={symbolValue}>
             <option disabled selected>
-              Обиріть торгову пару
+              Торгова пара
             </option>
             {pairs.value.ok ? pairs.value.data.map((symbol: any) => (
                 <option key={symbol.symbol} value={symbol.symbol}>{symbol.symbol}</option>
@@ -72,13 +72,13 @@ export default component$(() => {
           </select> 
       </div>
       <select name="interval" class="select select-bordered join-item" bind:value={intervalValue}>
-        <option disabled selected>Time Frame</option>
+        <option disabled selected>Time</option>
         <option>1h</option>
         <option>2h</option>
         <option>4h</option>
       </select>
       <div class={`indicator ${btnDisabled.value ? 'tooltip tooltip-bottom' : ''}`} data-tip="Виберіть пару та інтервал">
-        <button disabled={btnDisabled.value || action.inAction} class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>а як взагалі ця кнопка має називатись (що вона робить)?</button>
+        <button disabled={btnDisabled.value || action.inAction} class="btn join-item" onClick$={() => {action.updateSearchPairInfo()}}>GO <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg></button>
       </div>
     </div>
     {/* </Form> */}
