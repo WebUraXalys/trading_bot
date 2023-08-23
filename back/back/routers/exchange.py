@@ -1,6 +1,7 @@
 import jwt
 import time
 from fastapi import APIRouter, Depends
+from fastapi.exceptions import HTTPException
 from typing import Annotated, Dict
 from binance.client import Client
 from binance.exceptions import BinanceAPIException
@@ -118,7 +119,7 @@ async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str
                                     price=price)
         return order
     except BinanceAPIException as e:
-        return e
+        raise HTTPException(status_code=406, detail=e)
 
 
 async def get_precision(client, type, quantity, price, symbol):
