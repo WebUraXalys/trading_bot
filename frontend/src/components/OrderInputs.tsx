@@ -60,7 +60,7 @@ export default component$(() => {
             </label>
           </div>
           {isChecked.value ? 
-          <div class="inputs_tp_sl">
+          <div class="inputs_tp_sl mb-5">
             <div class="form-control">
                <label class="label">
                   <span class="label-text">Take Profit</span>
@@ -81,8 +81,11 @@ export default component$(() => {
              </div>
           </div>
           : null} 
-         
-      
+         <hr />
+         <div class="buttons mt-6 flex justify-around">
+            <button class="btn bg-[#0ecb81] text-white">Buy/Long</button>
+            <button class="btn bg-[#f6465d] text-white">Sell/Short</button>
+         </div>
          </>
     )
 });

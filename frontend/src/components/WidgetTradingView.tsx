@@ -5,7 +5,7 @@ export default component$(() => {
   const theme = useContext(themeContext);
 
   const nameScript = `new TradingView.widget({
-      "width": 880,
+      "width": 820,
       "height": 610,
       "symbol": "BINANCE:BTCUSDT",
       "interval": "60",
