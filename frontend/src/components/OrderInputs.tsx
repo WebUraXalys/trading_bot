@@ -27,7 +27,8 @@ export default component$(() => {
             <a class={[ marketBtn.value, 'tab', 'text-lg']} onClick$={() => {limitBtn.value = 'tab'; marketBtn.value='tab-active'}}>Market</a> 
         </div>
         <div class="inputs_order mb-5">
-        {marketBtn.value == "tab-active" ? <div class="input_for_market">
+        {limitBtn.value == "tab-active" ? 
+        <div class="input_for_market">
             <div class="form-control mt-2">
                <label class="input-group">
                   <span>Price</span>
@@ -42,7 +43,8 @@ export default component$(() => {
                   <span>USDT</span>
                </label>
             </div>
-         </div> : <div class="input_for_limit">
+         </div> : 
+         <div class="input_for_limit">
             <div class="form-control mt-2">
                <label class="input-group">
                   <span class="pr-[22px]">Size</span>

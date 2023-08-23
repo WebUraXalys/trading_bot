@@ -3,9 +3,11 @@ import ListOfPairs from "~/components/ListOfPairs";
 import WidgetTradingView from "~/components/WidgetTradingView";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import OrderInputs from "~/components/OrderInputs";
+import TableOfCandles from "~/components/TableOfCandles";
 
 export default component$(() => {
-  const isOpen = useSignal(false);
+  const isOpenChart = useSignal(false);
+  const isOpenTable = useSignal(true);
 
   return (
     <>
@@ -14,14 +16,14 @@ export default component$(() => {
         <div class="checkbox_form flex justify-around">
           <div class="form-control">
             <label class="label cursor-pointer">
-              <span class="label-text mr-3">Графік {isOpen.value}</span> 
-              <input type="checkbox" class="checkbox" bind:checked={isOpen} />
+              <span class="label-text mr-3">Графік {isOpenChart.value}</span> 
+              <input type="checkbox" class="checkbox" bind:checked={isOpenChart} />
             </label>
           </div>
           <div class="form-control">
             <label class="label cursor-pointer">
-              <span class="label-text mr-3">Список свічок </span> 
-              <input type="checkbox" checked class="checkbox" />
+              <span class="label-text mr-3">Список свічок {isOpenTable.value}</span> 
+              <input type="checkbox" checked class="checkbox"bind:checked={isOpenTable}  />
             </label>
           </div>
           <div class="form-control">
@@ -31,7 +33,8 @@ export default component$(() => {
             </label>
           </div>
         </div>
-        {isOpen.value ? <WidgetTradingView /> : <div class="hidden"></div>} 
+        {isOpenChart.value ? <WidgetTradingView /> : null} 
+        {isOpenTable.value ? <TableOfCandles/> : null} 
       </div>
       <div class="right w-[30%] max-w-[350px]">
         <ListOfPairs />
