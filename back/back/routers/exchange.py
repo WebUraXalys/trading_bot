@@ -109,13 +109,16 @@ async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str
     client = await api_authorise(token)  # Authentication
 
     quantity, price = await get_precision(client, type, quantity, price, symbol)
-
-    return client.futures_create_order(symbol=symbol,
-                                                                    side=side,
-                                                                    type=type,
-                                                                    quantity=quantity,
-                                                                    timeInForce=timeInForce,
-                                                                    price=price)
+    try:
+        order = client.futures_create_order(symbol=symbol,
+                                    side=side,
+                                    type=type,
+                                    quantity=quantity,
+                                    timeInForce=timeInForce,
+                                    price=price)
+        return order
+    except BinanceAPIException as e:
+        return e
 
 
 async def get_precision(client, type, quantity, price, symbol):
