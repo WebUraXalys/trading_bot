@@ -32,6 +32,10 @@ export const updateGetAction = $(async function (this: actionStore, resp_fn: any
         this.failed = true;
         this.message = resp.data.detail
     }
+    else if (resp.status === 422) {
+        this.failed = true;
+        this.message = resp.data.detail[0].msg;
+    }
     else {
         this.failed = true;
         this.message = "Сталась помилка, зверніться до адміністрації";

@@ -1,7 +1,8 @@
-import { component$, useContext, useComputed$, useSignal, useStore, $} from "@builder.io/qwik";
+import { component$, useContext, useComputed$, useSignal, useStore, $, Signal} from "@builder.io/qwik";
 import { type actionStore, updateGetAction } from "~/actionActix";
 import { authContext } from "~/routes/layout";
 import axios from "axios";
+import Tooltip from "./Tooltip";
 interface ItemProps {
   symbol: string;
 }
@@ -13,6 +14,16 @@ interface ItemProps {
 //       </div>
 //   );
 // });
+
+
+export type reqParamsType = {
+   symbol: string,
+   side: string,
+   type: string,
+   quantity: number,
+   timeInForce?: string,
+   price?: number,
+}
 
 
 export default component$<ItemProps>((props) => {
@@ -29,20 +40,32 @@ export default component$<ItemProps>((props) => {
    const isChecked = useSignal(false);
    const auth = useContext(authContext);
    const side = useSignal("BUY");
-   const quantity = useSignal<string>();
-   const price = useSignal<string>();
+   const quantity = useSignal<string>("");
+   const price = useSignal<string>("");
+
+   const reqParams: Readonly<Signal<reqParamsType>> = useComputed$(() => {
+      const x: reqParamsType = {
+      symbol: props.symbol,
+      side: side.value,
+      type: orderType.value,
+      quantity: Number(quantity.value),
+      timeInForce: limitBtn.value == "tab" ? undefined : "GTC",
+      price: price.value.length > 0 ? Number(price.value) : undefined,
+      };
+      return x;
+   });
+
+   const btnDisabled = useComputed$(() => {
+      if (props.symbol.length < 3 || quantity.value.length < 1 || orderType.value == "LIMIT" && (quantity.value.length < 1 || price.value.length < 1)) {
+         return true;
+      }
+      return false;
+   });
 
 
    const respFn = $(async function (self: actionStore) {
       const resp = await axios.get(self.endpoint_url, {
-        params: {
-          symbol: props.symbol,
-          side: side.value,
-          type: orderType.value,
-          quantity: quantity.value,
-         //  timeInForce: "GTC",
-          price: price.value,
-        },
+        params: reqParams.value,
         headers: {
           Authorization: `Bearer ${auth.value}`
         },
@@ -125,14 +148,18 @@ export default component$<ItemProps>((props) => {
           : null} 
          <hr />
          <div class="buttons mt-6 flex justify-around">
-            <button class="btn bg-[#0ecb81] text-white" onClick$={() => {
-               side.value = "BUY";
-               action.updateGetAction(respFn, auth);
-            }}>Buy/Long</button>
-            <button class="btn bg-[#f6465d] text-white" onClick$={() => {
-               side.value = "SELL";
-               action.updateGetAction(respFn, auth);
-            }}>Sell/Short</button>
+            <Tooltip dataTip="Виберіть тікер та к-ть" class="tooltip-bottom" disabled={!btnDisabled.value}>
+               <button disabled={action.inAction || btnDisabled.value} class="btn bg-[#0ecb81] text-white" onClick$={() => {
+                  side.value = "BUY";
+                  action.updateGetAction(respFn, auth);
+               }}>Buy/Long</button>
+            </Tooltip>
+            <Tooltip dataTip="Виберіть тікер та к-ть" class="tooltip-bottom" disabled={!btnDisabled.value}>
+               <button disabled={action.inAction || btnDisabled.value} class="btn bg-[#f6465d] text-white" onClick$={() => {
+                  side.value = "SELL";
+                  action.updateGetAction(respFn, auth);
+               }}>Sell/Short</button>
+            </Tooltip>
          </div>
          {action.ok ? 
          <div class="alert alert-success">Успішно!</div>
