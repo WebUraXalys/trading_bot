@@ -96,33 +96,91 @@ async def get_orders(symbol: str, token: Annotated[User, Depends(JWTBearer())]):
 
 
 @router.get('/new_order')
-async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None):
+async def create_order(token: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, type: str, quantity: float, timeInForce: str | None = None, price: float | None = None, takeProfitPrice: float | None = None, stopLossPrice: float | None = None):
     """
-
+    Create a futures trading order.
+    :param symbol: Trading symbol
     :param side: BUY or SELL
     :param type: LIMIT or MARKET
-    :param quantity:
-    :param timeInForce: GTC, IOC or FOK
-    :param price:
-    :param token:
-    :return: data about order
+    :param quantity: Order quantity
+    :param timeInForce: GTC, IOC, or FOK
+    :param price: Order price for LIMIT orders
+    :param takeProfitPrice: Take profit price
+    :param stopLossPrice: Stop loss price
+    :param token: User authentication token
+    :return: Data about the orders
     """
     client = await api_authorise(token)  # Authentication
 
-    quantity, price = await get_precision(client, type, quantity, price, symbol)
+    response = {}
+
+    quantity_precision, price_precision = await get_precision(client, symbol)
     try:
         order = client.futures_create_order(symbol=symbol,
-                                    side=side,
-                                    type=type,
-                                    quantity=quantity,
-                                    timeInForce=timeInForce,
-                                    price=price)
-        return order
+                                            side=side,
+                                            type=type,
+                                            quantity=round(quantity, quantity_precision),
+                                            timeInForce=timeInForce,
+                                            price=round(price, price_precision))
+        response["order"] = order  # order_id = order["clientOrderId"]
+
+        if takeProfitPrice is not None or stopLossPrice is not None:
+            tpsl = await add_tpsl(token, symbol, side, quantity, timeInForce, takeProfitPrice, stopLossPrice, quantity_precision, price_precision)
+            response["tpsl"] = tpsl
+        return response
     except BinanceAPIException as e:
         raise HTTPException(status_code=406, detail=str(e))
 
 
-async def get_precision(client, type, quantity, price, symbol):
+@router.get('/add_tpsl')
+async def add_tpsl(token: Annotated[User, Depends(JWTBearer())], symbol: str, side: str, quantity: float, timeInForce: str | None = None, take_profit_price: float | None = None, stop_loss_price: float | None = None, quantity_precision: float | None = None, price_precision: int | None = None, ):
+    """
+        Create a futures take profit/stop loss order.
+        :param symbol: Trading symbol
+        :param side: BUY or SELL
+        :param quantity: Order quantity
+        :param timeInForce: GTC, IOC, or FOK
+        :param take_profit_price: Take profit price
+        :param stop_loss_price: Stop loss price
+        :param quantity_precision: Quantity precision
+        :param price_precision: Price precision
+        :param token: User authentication token
+        :return: Data about the orders
+        """
+    client = await api_authorise(token)  # Authentication
+
+    if quantity_precision is None:
+        quantity_precision, price_precision = await get_precision(client, symbol)
+    tpsl = "SELL" if side == "BUY" else "BUY"
+    response = {}
+    orders_ids = []
+    try:
+        if take_profit_price is not None:
+            take_profit = client.futures_create_order(symbol=symbol,
+                                                      side=tpsl,
+                                                      type=client.FUTURE_ORDER_TYPE_TAKE_PROFIT_MARKET,
+                                                      quantity=round(quantity, quantity_precision),
+                                                      timeInForce=timeInForce,
+                                                      stopPrice=round(take_profit_price, price_precision))
+            response['take_profit'] = take_profit
+            orders_ids.append(take_profit['clientOrderId'])
+        if stop_loss_price is not None:
+            stop_loss = client.futures_create_order(symbol=symbol,
+                                                    side=tpsl,
+                                                    type=client.FUTURE_ORDER_TYPE_STOP_MARKET,
+                                                    quantity=round(quantity, quantity_precision),
+                                                    timeInForce=timeInForce,
+                                                    stopPrice=round(stop_loss_price, price_precision))
+            response['stop_loss'] = stop_loss
+            orders_ids.append(stop_loss['clientOrderId'])
+        return response
+    except BinanceAPIException as e:
+        for order_id in orders_ids:
+            client.futures_cancel_order(symbol=symbol, origClientOrderId=order_id)
+        raise HTTPException(status_code=406, detail=str(e))
+
+
+async def get_precision(client, symbol):
     # Default values
     price_precision = 8
     quantity_precision = 8
@@ -133,10 +191,7 @@ async def get_precision(client, type, quantity, price, symbol):
             quantity_precision = pair["baseAssetPrecision"]
             break
 
-    quantity = float(round(quantity, price_precision))
-    if type == "LIMIT":
-        price = float(round(price, quantity_precision))
-    return quantity, price
+    return quantity_precision, price_precision
 
 
 async def api_authorise(token):
@@ -150,8 +205,6 @@ async def api_authorise(token):
 
     try:
         client = NoPingClient(api_key=api_key, api_secret=secret_key, testnet=True)
-        # token = {"id": token.id, "login": token.login, "exp": token.exp, "api_key": api_key, "secret_key": secret_key}
-        # secret = settings.SECRET
         return client
     except BinanceAPIException as e:
         print(e)
