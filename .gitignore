@@ -3,6 +3,8 @@
 /lib
 /lib-types
 /server
+/target
+/bot/target
 
 # Development
 node_modules
