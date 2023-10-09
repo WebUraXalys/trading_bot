@@ -14,6 +14,7 @@ impl CandleStore {
     //     CandleStore { candles: RwLock::new(vec![]) }
     // }
     
+    
     fn init_store_collector() -> Self {
         let jh = thread::spawn(|| -> CandleStore {
             let (sender, reciever) = mpsc::channel::<KlineEvent>();
