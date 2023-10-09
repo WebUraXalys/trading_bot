@@ -10,7 +10,7 @@ use std::sync::mpsc::Sender;
 
 pub fn get_klines_btcusdt_10_pcs(sender: Sender<KlineEvent>) {
     let keep_running = AtomicBool::new(true); // Used to control the event loop
-    let kline = format!("{}", "ethbtc@kline_1m");
+    let kline = format!("{}", "btcusdt@kline_1m");
     let mut last_kline = 0;
     let mut web_socket = WebSockets::new(|event: WebsocketEvent| {
         match event {

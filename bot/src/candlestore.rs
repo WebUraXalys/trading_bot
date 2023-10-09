@@ -1,19 +1,24 @@
 use crate::candles::{*, self};
+use crate::worker::run_bot_worker;
 use std::sync::mpsc::{Receiver, TryRecvError};
 use std::{thread, vec};
 use std::sync::{mpsc, RwLock};
 use binance::model::KlineEvent;
 
 #[derive(Debug)]
-struct CandleStore {
-    candles: Vec<KlineEvent>,
+pub struct CandleStore {
+    pub candles: Vec<KlineEvent>,
     candle_reciever: Receiver<KlineEvent>,
 }
 impl CandleStore {
-    
     // fn new() {
     //     CandleStore { candles: RwLock::new(vec![]) }
     // }
+
+    pub fn restore_first_candle(&mut self) {
+        self.candles[0] = self.candles[1].clone();
+        self.candles.remove(1);
+    }
     
     fn init_store_collector() -> Self {
         let jh = thread::spawn(|| -> CandleStore {
@@ -29,7 +34,7 @@ impl CandleStore {
     }
 
     fn update(&mut self) -> Option<()> {
-        if let Ok(r) = self.candle_reciever.try_recv() {
+        if let Ok(r) = self.candle_reciever.recv() {
             self.candles.push(r.clone());
             Some(())
         } else {
@@ -43,6 +48,7 @@ pub fn store() {
     let mut cs = CandleStore::init_store_collector();
     loop {
         cs.update();
-        println!("{} -=-=-=-= {:?}\n\n", cs.candles.len(), cs.candles);
+        run_bot_worker(&mut cs);
+        //println!("{} -=-=-=-= {:?}\n\n", cs.candles.len(), cs.candles);
     }
 }
