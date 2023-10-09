@@ -10,6 +10,7 @@ struct CandleStore {
     candle_reciever: Receiver<KlineEvent>,
 }
 impl CandleStore {
+    
     // fn new() {
     //     CandleStore { candles: RwLock::new(vec![]) }
     // }
