@@ -1,0 +1,1 @@
+/Users/ig4er/Projects/trading_bot/bot/target/debug/bot: /Users/ig4er/Projects/trading_bot/bot/src/candles.rs /Users/ig4er/Projects/trading_bot/bot/src/candlestore.rs /Users/ig4er/Projects/trading_bot/bot/src/main.rs
