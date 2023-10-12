@@ -16,8 +16,7 @@ impl CandleStore {
     // }
 
     pub fn restore_first_candle(&mut self) {
-        self.candles[0] = self.candles[1].clone();
-        self.candles.remove(1);
+        self.candles.remove(0);
     }
     
     fn init_store_collector() -> Self {
