@@ -16,7 +16,8 @@ impl CandleStore {
     // }
 
     pub fn restore_first_candle(&mut self) {
-        self.candles.remove(0);
+        // self.candles.remove(0);
+        self.candles = vec![self.candles.last().unwrap().to_owned()];
     }
     
     fn init_store_collector() -> Self {

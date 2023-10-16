@@ -10,8 +10,13 @@ use fib::*;
 use std::thread;
 use std::sync::mpsc;
 use binance::model::KlineEvent;
+use log::{error, info, warn};
+use log4rs;
 
 fn main() {
+    log4rs::init_file("config/log4rs.yaml", Default::default()).unwrap();
+    info!("booting up");
+
     let (sender, reciever) = mpsc::channel::<KlineEvent>();
 
     let jh = thread::spawn(move|| {
@@ -27,3 +32,5 @@ fn main() {
     let _ = jh.join();
     
 }
+
+// export const ssr = false;
