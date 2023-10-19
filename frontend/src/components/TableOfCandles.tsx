@@ -74,27 +74,27 @@ export default component$(() => {
     <tbody>
       <tr>
         <th>1</th> 
-        <td>Cy Ganderton</td> 
-        <td>Quality Control Specialist</td> 
-        <td>Littel, Schaden and Vandervort</td> 
-        <td>Canada</td> 
-        <td>12/16/2020</td> 
+        <td>1692795600000</td> 
+        <td>26781.60</td> 
+        <td>26880</td> 
+        <td>26430</td> 
+        <td>26580.30</td> 
       </tr>
       <tr>
         <th>2</th> 
-        <td>Hart Hagerty</td> 
-        <td>Desktop Support Technician</td> 
-        <td>Zemlak, Daniel and Leannon</td> 
-        <td>United States</td> 
-        <td>12/5/2020</td> 
+        <td>1692799200000</td> 
+        <td>26728.40</td> 
+        <td>26900</td> 
+        <td>26495.40</td> 
+        <td>26849</td> 
       </tr>
       <tr>
         <th>3</th> 
-        <td>Brice Swyre</td> 
-        <td>Tax Accountant</td> 
-        <td>Carroll Group</td> 
-        <td>China</td> 
-        <td>8/15/2020</td> 
+        <td>1692802800000</td> 
+        <td>26849</td> 
+        <td>27142.80</td> 
+        <td>26559</td> 
+        <td>26899.90</td> 
       </tr>
       <tr>
         <th>4</th> 
