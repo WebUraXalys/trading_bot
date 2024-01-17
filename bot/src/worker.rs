@@ -11,7 +11,8 @@ pub fn run_bot_worker(klines: &mut CandleStore) {
         print!("\n");
         let first_kline = &candles.first().unwrap().kline;
         let half_of_first_kline = (first_kline.high.parse::<f64>().unwrap() - first_kline.low.parse::<f64>().unwrap())*0.5 + first_kline.low.parse::<f64>().unwrap();
-        if candles[1].kline.high.parse::<f64>().unwrap() > first_kline.high.parse::<f64>().unwrap() { // first step c.2.h > c.1.h    if candles.last().unwrap().kline.high.parse::<f64>().unwrap() > candles.ПЕРЕД-ОСТАННІЙ().unwrap().kline.high.parse::<f64>().unwrap()
+        let pre_last_index = candles.len()-2;
+        if candles.last().unwrap().kline.high.parse::<f64>().unwrap() > candles[pre_last_index].kline.high.parse::<f64>().unwrap() { // first step c.2.h > c.1.h    if candles.last().unwrap().kline.high.parse::<f64>().unwrap() > candles.ПЕРЕД-ОСТАННІЙ().unwrap().kline.high.parse::<f64>().unwrap()
             let fibon = FibRetr::from(candles);
             
             if candles.last().unwrap().kline.low.parse::<f64>().unwrap() < fibon.fib05 {
@@ -23,7 +24,7 @@ pub fn run_bot_worker(klines: &mut CandleStore) {
                 candles.iter().enumerate().for_each(|(num, candle)| {info!("Candle #{} ({}) HIGH: {} ", num, NaiveDateTime::from_timestamp_opt(candle.kline.open_time/1000, 0).unwrap(), candle.kline.high)});
                 println!("{:?}", fibon);
             }
-        } else {
+         } else {
             klines.restore_first_candle()
         }
     }
