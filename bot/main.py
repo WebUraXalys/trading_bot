@@ -1,15 +1,18 @@
 import time
-
+import os
 from binance import ThreadedWebsocketManager
+from dotenv import load_dotenv
+load_dotenv()
 
-api_key = None
-api_secret = None
+api_key = os.environ.get("API_KEY")
+api_secret = os.environ.get("API_KEY_SECRET")
+print(api_key, api_secret)
 
 def main():
 
     symbol = 'BNBBTC'
 
-    twm = ThreadedWebsocketManager(api_key=api_key, api_secret=api_secret)
+    twm = ThreadedWebsocketManager(api_key=api_key, api_secret=api_secret, testnet=True)
     # start is required to initialise its internal loop
     twm.start()
 
