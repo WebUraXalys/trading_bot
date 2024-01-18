@@ -6,7 +6,7 @@ load_dotenv()
 
 api_key = os.environ.get("API_KEY")
 api_secret = os.environ.get("API_KEY_SECRET")
-print(api_key, api_secret)
+# print(api_key, api_secret)
 
 KLINES = []
 KLINEINFO = {
@@ -34,7 +34,7 @@ def handle_socket_message(msg):
         KLINES.append(kline)
         print(KLINEINFO, KLINES)
     else:
-        print("TTK:", int(str(k["T"])[:10])-gettime)
+        print("\rTTK:", (int(str(k["T"])[:10])-gettime)+8, end="")
 
 
 def main():
