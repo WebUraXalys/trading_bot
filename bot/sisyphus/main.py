@@ -1,37 +1,29 @@
 import time
-import os
+from typing import List
 from binance import ThreadedWebsocketManager
 from settings import SETTINGS
+from models import Kline, KlineInfo
 
 api_key = SETTINGS.BINANCE_API_KEY
 api_secret = SETTINGS.BINANCE_API_SECRET
 # print(api_key, api_secret)
 
-KLINES = []
-KLINEINFO = {}
+KLINES: List[Kline] = []
+KLINEINFO = None
 
 def handle_socket_message(msg):
     gettime = int(time.time())
     k = msg["k"]
     if k["x"]:
-        if len(KLINEINFO) <= 0:
-            KLINEINFO.update({
-                "symbol": msg["s"],
-                "interval": k["i"]
-            })
-        kline= {
-            "start_time": k["t"],
-            "end_time": k["T"],
-            "open_price": k["o"],
-            "close_price": k["c"],
-            "high_price": k["h"],
-            "low_price": k["l"],
-            "kline_finished": k["x"]
-        }
+        if KLINEINFO is None:
+            KLINEINFO = KlineInfo(symbol=msg['s'], interval=k['i'])
+        kline = Kline.model_validate(k)
+        print(kline)
         KLINES.append(kline)
         print(KLINEINFO, KLINES)
     else:
-        print("\rTTK:", (int(str(k["T"])[:10])-gettime)+8, end="")
+        # TTK - Time To Kline
+        print("\rTTK:", (int(str(k["T"])[:-3])-gettime)+8, end="")
 
 
 def main():
