@@ -9,18 +9,15 @@ api_secret = SETTINGS.BINANCE_API_SECRET
 # print(api_key, api_secret)
 
 KLINES: List[Kline] = []
-KLINEINFO = None
 
 def handle_socket_message(msg):
     gettime = int(time.time())
     k = msg["k"]
     if k["x"]:
-        if KLINEINFO is None:
-            KLINEINFO = KlineInfo(symbol=msg['s'], interval=k['i'])
         kline = Kline.model_validate(k)
-        print(kline)
+        print("\n", kline)
         KLINES.append(kline)
-        print(KLINEINFO, KLINES)
+        print("Klines qty:", len(KLINES))
     else:
         # TTK - Time To Kline
         print("\rTTK:", (int(str(k["T"])[:-3])-gettime)+8, end="")

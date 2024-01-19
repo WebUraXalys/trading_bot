@@ -6,10 +6,10 @@ from pydantic.functional_validators import AfterValidator
 class Kline(BaseModel):
     start_time: int = Field(alias="t")
     end_time: int = Field(alias="T")
-    open_price: str = Field(alias="o")
-    close_price: str = Field(alias="c")
-    high_price: str = Field(alias="h")
-    low_price: str = Field(alias="l")
+    open_price: float = Field(alias="o")
+    close_price: float = Field(alias="c")
+    high_price: float = Field(alias="h")
+    low_price: float = Field(alias="l")
     kline_finished: bool = Field(alias="x")
 
 
