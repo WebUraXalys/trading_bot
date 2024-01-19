@@ -10,7 +10,7 @@ class Kline(BaseModel):
     close_price: float = Field(alias="c")
     high_price: float = Field(alias="h")
     low_price: float = Field(alias="l")
-    kline_finished: bool = Field(alias="x")
+    kline_finished: bool = Field(alias="x", exclude=True, repr=False, default=True)
 
 
 class KlineInfo(BaseModel):
