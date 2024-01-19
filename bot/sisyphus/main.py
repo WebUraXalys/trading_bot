@@ -1,17 +1,14 @@
 import time
 import os
 from binance import ThreadedWebsocketManager
-from dotenv import load_dotenv
-load_dotenv()
+from settings import SETTINGS
 
-api_key = os.environ.get("API_KEY")
-api_secret = os.environ.get("API_KEY_SECRET")
+api_key = SETTINGS.BINANCE_API_KEY
+api_secret = SETTINGS.BINANCE_API_SECRET
 # print(api_key, api_secret)
 
 KLINES = []
-KLINEINFO = {
-
-}
+KLINEINFO = {}
 
 def handle_socket_message(msg):
     gettime = int(time.time())
