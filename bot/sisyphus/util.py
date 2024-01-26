@@ -1,4 +1,4 @@
-from bot.sisyphus.models import Kline
+from models import Kline
 
 
 def calculate_kline_half(kline: Kline):

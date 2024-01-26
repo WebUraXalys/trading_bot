@@ -1,7 +1,7 @@
-from bot.sisyphus.models import ExecutionResult, Kline
+from models import ExecutionResult, Kline
 from typing import List
-from bot.sisyphus.settings import SETTINGS
-from bot.sisyphus.util import calculate_kline_half
+from settings import SETTINGS
+from util import calculate_kline_half
 
 
 class Executable:
@@ -18,6 +18,7 @@ class Sequencer:
     def run_execution(self):
         ex = self.current_executable
         result = ex.execute(self.klines)
+        print(result)
         if result.new_executable:
             self.current_executable = result.new_executable
         if result.new_klines_sequence:
@@ -38,21 +39,25 @@ class AwaitingImpulse(Executable):
         return klines[-1].low_price > calculate_kline_half(klines[0])
 
     def execute(self, klines: List[Kline]):
+        print("AWAITING IMPULSE")
         if len(klines) >= 2:
-            if self.high_of_first_is_greater_than_high_of_current():
-                if self.low_of_current_is_greater_than_half_of_first():
+            if AwaitingImpulse.high_of_first_is_greater_than_high_of_current(klines):
+                if AwaitingImpulse.low_of_current_is_greater_than_half_of_first(klines):
                     return ExecutionResult(new_executable=ValidatingImpulse(), new_klines_sequence=None, execute_immediately=True)
         return ExecutionResult(new_executable=None, new_klines_sequence=[klines[-1]], execute_immediately=False)
 
 
 class ValidatingImpulse(Executable):
     def execute(self, klines: List[Kline]) -> ExecutionResult:
+        print("VALIDATING IMPULSE")
         imulse_price = klines[-1].high_price - klines[-1].low_price
         impulse_percent = imulse_price / klines[-1].low_price
         if impulse_percent > SETTINGS.MIN_IMPULSE_PERCENT:
-            return ExecutionResult(new_executable=AwaitingImpulse(), new_klines_sequence=None, execute_immediately=False)
+            return ExecutionResult(new_executable=SuccesfulImpulse(), new_klines_sequence=None, execute_immediately=True)
         else:
-            return ExecutionResult(new_executable=AwaitingImpulse(), new_klines_sequence=None, execute_immediately=True)
+            return ExecutionResult(new_executable=AwaitingImpulse(), new_klines_sequence=None, execute_immediately=False)
 
 class SuccesfulImpulse(Executable):
-    pass
+    def execute(self, klines: List[Kline]) -> ExecutionResult:
+        print("SUCCESFUL IMPULSE")
+        return super().execute(klines)
