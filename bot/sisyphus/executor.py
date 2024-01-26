@@ -34,7 +34,7 @@ class AwaitingImpulse(Executable):
     def high_of_first_is_greater_than_high_of_current(klines: List[Kline]) -> bool:
         return klines[0].high_price > klines[-1].high_price
     
-    def low_of_current_is_greater_than_half_of_first(klines: List[Kline]):
+    def low_of_current_is_greater_than_half_of_first(klines: List[Kline]) -> bool:
         return klines[-1].low_price > calculate_kline_half(klines[0])
 
     def execute(self, klines: List[Kline]):
