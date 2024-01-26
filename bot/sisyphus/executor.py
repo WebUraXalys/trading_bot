@@ -1,6 +1,6 @@
 from bot.sisyphus.models import ExecutionResult, Kline
 from typing import List
-
+from bot.sisyphus.settings import SETTINGS
 from bot.sisyphus.util import calculate_kline_half
 
 
@@ -49,7 +49,7 @@ class ValidatingImpulse(Executable):
     def execute(self, klines: List[Kline]) -> ExecutionResult:
         imulse_price = klines[-1].high_price - klines[-1].low_price
         impulse_percent = imulse_price / klines[-1].low_price
-        if impulse_percent > 0.95:
+        if impulse_percent > SETTINGS.MIN_IMPULSE_PERCENT:
             return ExecutionResult(new_executable=AwaitingImpulse(), new_klines_sequence=None, execute_immediately=False)
         else:
             return ExecutionResult(new_executable=AwaitingImpulse(), new_klines_sequence=None, execute_immediately=True)

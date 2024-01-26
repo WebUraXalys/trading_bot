@@ -6,4 +6,6 @@ class SisyphusSettings(BaseSettings):
     BINANCE_API_KEY: str = "NO KEY"
     BINANCE_API_SECRET: str= "NO SECRET"
 
+    MIN_IMPULSE_PERCENT: float = 0.95
+
 SETTINGS = SisyphusSettings()
