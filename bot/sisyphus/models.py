@@ -45,5 +45,5 @@ class ExecutionResult():
     def __str__(self) -> str:
         result = ""
         if self.new_executable:
-            result += f"New executable: {self.new_executable.__name__}\n"
+            result += f"New executable: {self.new_executable.__class__.__name__}\n"
         return result + f"New Klines seq.: {self.new_klines_sequence}\nExecute immediately: {self.execute_immediately}"

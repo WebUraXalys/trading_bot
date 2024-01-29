@@ -20,7 +20,6 @@ def handle_socket_message(msg):
         print("\n", kline)
         #KLINES.append(kline)
         sequncer.input_kline(kline)
-        print("Klines qty:", len(sequncer.klines))
     else:
         # TTK - Time To Kline
         print("\rTTK:", (int(str(k["T"])[:-3])-gettime)+8, end="")
@@ -29,7 +28,7 @@ def handle_socket_message(msg):
 def main():
     symbol = 'BTCUSDT'
 
-    twm = ThreadedWebsocketManager(api_key=api_key, api_secret=api_secret, testnet=True)
+    twm = ThreadedWebsocketManager(api_key=api_key, api_secret=api_secret, testnet=False)
     twm.start()
 
     twm.start_kline_socket(callback=handle_socket_message, symbol=symbol)
