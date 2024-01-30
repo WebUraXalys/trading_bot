@@ -2,6 +2,7 @@ from models import ExecutionResult, Kline
 from typing import List
 from settings import SETTINGS
 from operator import attrgetter
+from util import calculate_fib
 
 
 class Executable:
@@ -85,24 +86,36 @@ class TrackedImpulse(Executable):
         Returns `True` if current high kline was updated, otherwise returns `False`
         """
         actual_current_high_kline = get_current_high_kline(klines)
-        if self.current_high_kline != actual_current_high_kline:
+        klines_different = self.current_high_kline != actual_current_high_kline
+        if klines_different:
             self.current_high_kline = actual_current_high_kline
-            return True
-        return False
+        return not klines_different
 
     def __init__(self, current_high_kline=None) -> None:
         if current_high_kline is not None:
             self.current_high_kline = current_high_kline
         super().__init__()
 
+    def impulse_has_fallen(self, impulse_start: Kline) -> bool:
+        fib = calculate_fib(impulse_start, self.current_high_kline)
+        return klines[-1].half() < fib.fib05
+
     def execute(self, klines: List[Kline]) -> ExecutionResult:
         print("TRACKED IMPULSE")
         if update_current_high_kline(klines):
             return ExecutionResult(new_executable=GotNewHighInImpulse(), new_klines_sequence=None, execute_immediately=True)
-        else:
-            return ExecutionResult(new_executable=TrackedImpulse(current_high_kline=self.current_high_kline), new_klines_sequence=None, execute_immediately=False)
+
+        if self.impulse_has_fallen(impulse_start=klines[0]):
+            return ExecutionResult(new_executable=ImpulseFallen(), new_klines_sequence=None, execute_immediately=True)
+
+        return ExecutionResult(new_executable=TrackedImpulse(current_high_kline=self.current_high_kline), new_klines_sequence=None, execute_immediately=False)
 
 
 class GotNewHighInImpulse(Executable):
     def execute(self, klines: List[Kline]) -> ExecutionResult:
-        return super().execute()
+        return super().execute(klines)
+
+
+class ImpulseFallen(Executable):
+    def execute(self, klines: List[Kline]) -> ExecutionResult:
+        return super().execute(klines)

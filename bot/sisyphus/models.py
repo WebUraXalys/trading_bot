@@ -51,3 +51,14 @@ class ExecutionResult:
         if self.new_executable:
             result += f"New executable: {self.new_executable.__class__.__name__}\n"
         return result + f"New Klines seq.: {self.new_klines_sequence}\nExecute immediately: {self.execute_immediately}"
+
+
+class Fib(BaseModel):
+    fib0: float = None
+    fib0236: float = None
+    fib0382: float = None
+    fib05: float = None
+    fib0618: float = None
+    fib1: float = None
+    fib1618: float = None
+    fib2: float = None
