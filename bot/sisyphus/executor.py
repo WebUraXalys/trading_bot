@@ -9,6 +9,7 @@ class Executable:
     def execute(self, klines: List[Kline]) -> ExecutionResult:
         return ExecutionResult(new_executable=None, new_klines_sequence=None, execute_immediately=False)
 
+
 class Sequencer:
     klines: List[Kline] = []
     current_executable: Executable = None
@@ -33,18 +34,20 @@ class Sequencer:
         self.run_execution()
 
 
+def low_of_current_is_greater_than_half_of_first(klines: List[Kline]) -> bool:
+    return klines[-1].low_price > calculate_kline_half(klines[0])
+
+
+def high_of_first_is_greater_than_high_of_current(klines: List[Kline]) -> bool:
+    return klines[-1].high_price > klines[0].high_price
+
+
 class AwaitingImpulse(Executable):
-    def high_of_first_is_greater_than_high_of_current(klines: List[Kline]) -> bool:
-        return klines[-1].high_price > klines[0].high_price
-
-    def low_of_current_is_greater_than_half_of_first(klines: List[Kline]) -> bool:
-        return klines[-1].low_price > calculate_kline_half(klines[0])
-
     def execute(self, klines: List[Kline]):
         print("AWAITING IMPULSE")
         if len(klines) >= 3:
-            if AwaitingImpulse.high_of_first_is_greater_than_high_of_current:
-                if AwaitingImpulse.low_of_current_is_greater_than_half_of_first:
+            if high_of_first_is_greater_than_high_of_current:
+                if low_of_current_is_greater_than_half_of_first:
                     return ExecutionResult(new_executable=ValidatingImpulse(), new_klines_sequence=None, execute_immediately=True)
         else:
             return ExecutionResult(new_executable=None, new_klines_sequence=None, execute_immediately=False)
@@ -66,7 +69,7 @@ class ValidatingImpulse(Executable):
 
 class SuccessfulImpulse(Executable):
     def execute(self, klines: List[Kline]) -> ExecutionResult:
-        print("SUCCESFUL IMPULSE")
+        print("SUCCESSFUL IMPULSE")
         return super().execute(klines)
 
 
