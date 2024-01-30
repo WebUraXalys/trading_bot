@@ -1,7 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List
 from pydantic.functional_validators import AfterValidator
-from executor import Executable
 
 
 class Kline(BaseModel):
@@ -20,31 +19,6 @@ class Kline(BaseModel):
 class KlineInfo(BaseModel):
     symbol: str = Field(alias="s")
     interval: str = Field(alias="i")
-
-
-class ExecutionResult:
-    new_executable: Executable | None = None
-    new_klines_sequence: List[Kline] | None = None
-    execute_immediately: bool = False
-
-    def __init__(self, **kwargs) -> None:
-        ne = kwargs["new_executable"]
-        if ne:
-            self.new_executable = ne
-        else:
-            self.new_executable = None
-
-        nks = kwargs["new_klines_sequence"]
-        if nks:
-            self.new_klines_sequence = nks
-        else:
-            self.new_klines_sequence = None
-
-        ei = kwargs["execute_immediately"]
-        if ei:
-            self.execute_immediately = ei
-        else:
-            self.execute_immediately = False
 
     def __str__(self) -> str:
         result = ""
