@@ -1,7 +1,7 @@
-from concurrent.futures import Executor
 from pydantic import BaseModel, Field
 from typing import List
 from pydantic.functional_validators import AfterValidator
+from executor import Executable
 
 
 class Kline(BaseModel):
@@ -13,13 +13,17 @@ class Kline(BaseModel):
     low_price: float = Field(alias="l")
     kline_finished: bool = Field(alias="x", exclude=True, repr=False, default=True)
 
+    def half(self):
+        return (0.5 * (self.high_price - self.low_price)) + self.low_price
+
 
 class KlineInfo(BaseModel):
     symbol: str = Field(alias="s")
     interval: str = Field(alias="i")
 
-class ExecutionResult():
-    new_executable: Executor | None = None
+
+class ExecutionResult:
+    new_executable: Executable | None = None
     new_klines_sequence: List[Kline] | None = None
     execute_immediately: bool = False
 
@@ -41,7 +45,7 @@ class ExecutionResult():
             self.execute_immediately = ei
         else:
             self.execute_immediately = False
-    
+
     def __str__(self) -> str:
         result = ""
         if self.new_executable:
