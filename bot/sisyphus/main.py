@@ -9,20 +9,21 @@ api_key = SETTINGS.BINANCE_API_KEY
 api_secret = SETTINGS.BINANCE_API_SECRET
 # print(api_key, api_secret)
 
-#KLINES: List[Kline] = []
-sequncer: Sequencer = Sequencer(AwaitingImpulse())
+# KLINES: List[Kline] = []
+sequencer: Sequencer = Sequencer(AwaitingImpulse())
+
 
 def handle_socket_message(msg):
-    gettime = int(time.time())
+    now_time = int(time.time())
     k = msg["k"]
     if k["x"]:
         kline = Kline.model_validate(k)
         print("\n", kline)
-        #KLINES.append(kline)
-        sequncer.input_kline(kline)
+        # KLINES.append(kline)
+        sequencer.input_kline(kline)
     else:
         # TTK - Time To Kline
-        print("\rTTK:", (int(str(k["T"])[:-3])-gettime)+8, end="")
+        print("\rTTK:", (int(str(k["T"])[:-3]) - now_time) + 8, end="")
 
 
 def main():
@@ -37,4 +38,4 @@ def main():
 
 
 if __name__ == "__main__":
-   main()
+    main()
